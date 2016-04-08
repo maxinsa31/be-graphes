@@ -61,34 +61,25 @@ public class Label implements Comparable<Label>{
 	public static void resetSommetsMarques(){
 		nbSommetsMarques = 0;
 	}
+	
+	public double getCoutEstime(){
+		return 0.0;
+	}
 
 	@Override
 	public int compareTo(Label L){
-		if(L instanceof LabelPccStar ){			
-			LabelPccStar  x = (LabelPccStar)this;
-			if(x.getCout() + x.getCoutEstime() -( ((LabelPccStar)(L)).getCout()+((LabelPccStar)(L)).getCoutEstime() ) < 0){
-				return -1;
+		if(getCout() + getCoutEstime() -( L.getCout()+L.getCoutEstime() ) < 0){
+			return -1;
+		}else{
+			if(getCout() + getCoutEstime() -( L.getCout()+L.getCoutEstime()) > 0){
+				return 1;
 			}else{
-				if(x.getCout() + x.getCoutEstime() -( ((LabelPccStar)(L)).getCout()+((LabelPccStar)(L)).getCoutEstime()) > 0){
-					return 1;
+				if(getCoutEstime() < L.getCoutEstime()){
+					return -1;
 				}else{
-					if(x.getCoutEstime() < ((LabelPccStar)(L)).getCoutEstime()){
-						return -1;
-					}else{
-						return 1;			
-					}
+					return 1;			
 				}
 			}
-		}else{
-			if (this.cout - L.getCout() < 0){
-				return -1;
-			}else{
-				if(this.cout - L.getCout() == 0){
-					return 0;
-				}else{
-					return 1;
-				}
-			}	
 		}
 	}
 }

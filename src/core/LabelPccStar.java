@@ -10,6 +10,7 @@ public class LabelPccStar extends Label{
 		this.coutEstimeDest=coutEstimeDest;
 	}
 	
+	@Override
 	public double getCoutEstime(){
 		return this.coutEstimeDest;
 	}
