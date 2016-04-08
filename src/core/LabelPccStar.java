@@ -13,7 +13,5 @@ public class LabelPccStar extends Label{
 	public double getCoutEstime(){
 		return this.coutEstimeDest;
 	}
-	
-	
 
 }
