@@ -78,7 +78,7 @@ public class Covoiturage extends Algo{
 		float tab[] = new float[this.algo.tabLabel.length];
 		
 		
-		
+		  
 		
 	}
 
