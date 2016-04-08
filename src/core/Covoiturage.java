@@ -38,17 +38,18 @@ public class Covoiturage extends Algo{
 			this.algo.tabLabel[numSommetMin].setCout(this.algo.Tas.deleteMin().getCout()); //mise a jour du cout du label du sommet min 
 			this.algo.tabLabel[numSommetMin].setMarq(); // mise  a jour du marquage du sommet min : marque
 			for (Route r : this.graphe.getTabNodes()[numSommetMin].getRoutesSuccesseurs()){ //pour tous les successeurs de sommet min
-				SommetSuccesseur=r.getNodeSucc(); // on recupere son numero de sommet
+				SommetSuccesseur = r.getNodeSucc(); // on recupere son numero de sommet
 				numSommetSuccesseur = SommetSuccesseur.getNumNode();
-				if(!this.algo.tabLabel[numSommetSuccesseur].getMarq()){ // si ce sommet n'est pas marque
-					if(this.algo.tabLabel[numSommetSuccesseur].getCout()>(this.algo.tabLabel[numSommetMin].getCout()+r.getCoutRoute())){
-						this.algo.tabLabel[numSommetSuccesseur].setCout(this.algo.tabLabel[numSommetMin].getCout()+r.getCoutRoute());
-						this.algo.tabLabel[numSommetSuccesseur].setPere(numSommetMin); // mise a jour du pere					
-						if(this.algo.Tas.getHmap().containsKey(this.algo.tabLabel[numSommetSuccesseur])){							
-							this.algo.Tas.update(this.algo.tabLabel[numSommetSuccesseur]);
+				Label labelSommetSucc=this.algo.tabLabel[numSommetSuccesseur];
+				if(!labelSommetSucc.getMarq()){ // si ce sommet n'est pas marque
+					if(labelSommetSucc.getCout()>(this.algo.tabLabel[numSommetMin].getCout()+r.getCoutRoute())){
+						labelSommetSucc.setCout(this.algo.tabLabel[numSommetMin].getCout()+r.getCoutRoute());
+						labelSommetSucc.setPere(numSommetMin); // mise a jour du pere					
+						if(this.algo.Tas.getHmap().containsKey(labelSommetSucc)){							
+							this.algo.Tas.update(labelSommetSucc);
 						}
 						else{
-						this.algo.Tas.insert(this.algo.tabLabel[numSommetSuccesseur],numSommetSuccesseur);
+						this.algo.Tas.insert(labelSommetSucc,numSommetSuccesseur);
 						}						
 					}
 				}
