@@ -1,5 +1,6 @@
 package core ;
 
+import java.awt.Color;
 import java.io.* ;
 import java.util.ArrayList;
 
@@ -26,7 +27,7 @@ public class PccStar extends Pcc {
 		//System.out.println("ICI : 139 - 25 : "+Graphe.distance((double)this.graphe.getTabNodes()[25].getLong(),(double)this.graphe.getTabNodes()[25].getLat(),(double)this.graphe.getTabNodes()[139].getLong(),(double)this.graphe.getTabNodes()[139].getLat()));			
 			//this.tabLabel[i] = new LabelPccStar(i,Math.abs( (double)this.graphe.getTabNodes()[i].getLong() - (double)this.graphe.getTabNodes()[destination].getLong()) + Math.abs((double)this.graphe.getTabNodes()[destination].getLat() - (double)this.graphe.getTabNodes()[i].getLat()));
 		
-		
+		this.graphe.getDessin().setColor(Color.cyan);
 		if(Dijkstra()){ 
 			int numSommet=this.destination;
 
