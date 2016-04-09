@@ -1,5 +1,6 @@
 package core ;
 
+import java.awt.Color;
 import java.io.* ;
 import base.Readarg ;
 import java.util.*;
@@ -108,7 +109,7 @@ public class Pcc extends Algo {
 				
 		
 		
-		
+		this.graphe.getDessin().setColor(Color.green);
 		if(Dijkstra()){ // dijkstra de pcc
 			int numSommet=this.destination;
 
