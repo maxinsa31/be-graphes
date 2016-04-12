@@ -15,8 +15,6 @@ public class Label implements Comparable<Label>{
 	private int pere; // num sommet pere du plus court chemin courant 
 
 	private int sommetCourant; // num sommet concerné par ce label
-	
-	private static int nbSommetsMarques=0;
 
 	public Label(int sommetCourant){
 		this.sommetCourant=sommetCourant;
@@ -28,10 +26,7 @@ public class Label implements Comparable<Label>{
 	public boolean getMarq(){
 		return this.marquage;
 	}
-	
-	public static int getNbSommetsMarques(){
-		return nbSommetsMarques;
-	}
+
 
 	public double getCout(){
 		return this.cout;
@@ -50,16 +45,11 @@ public class Label implements Comparable<Label>{
 	}
 
 	public void setMarq(){
-		nbSommetsMarques++;
 		this.marquage = true;
 	}
 	
 	public void setPere(int pere){
 		this.pere = pere;
-	}
-
-	public static void resetSommetsMarques(){
-		nbSommetsMarques = 0;
 	}
 
 	@Override

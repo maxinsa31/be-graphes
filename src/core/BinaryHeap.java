@@ -21,8 +21,6 @@ public class BinaryHeap<E extends Comparable<E>> {
 
     private int currentSize; // Number of elements in heap
     
-    protected int NbSommetsExplores;
-    
     protected int nbMaxElementsTas;
 
     // Java genericity does not work with arrays.
@@ -31,17 +29,13 @@ public class BinaryHeap<E extends Comparable<E>> {
 
     private HashMap <E,Integer> hmap; 
 
-
-	public HashMap<E,Integer> getHmap(){ 
-		return this.hmap;
-	}
-
-	public int getNbSommetsExplores(){
-		return this.NbSommetsExplores;
-	}
 	
 	public int getNbMaxElementsTas(){
 		return this.nbMaxElementsTas;
+	}
+	
+	public boolean hmapContainsKey(E element){
+		return this.hmap.containsKey(element);
 	}
 
     /**
@@ -49,7 +43,6 @@ public class BinaryHeap<E extends Comparable<E>> {
      */
     public BinaryHeap() {
         this.currentSize = 0;
-        this.NbSommetsExplores=0;
         this.array = new ArrayList<E>() ;
 		this.hmap = new HashMap<E,Integer>();
 		this.nbMaxElementsTas=0;
@@ -62,7 +55,6 @@ public class BinaryHeap<E extends Comparable<E>> {
 	this.hmap = new HashMap<E,Integer>(heap.hmap);	
 	this.nbMaxElementsTas=0;	
         this.currentSize = 0;
-        this.NbSommetsExplores=0;
     }
 
     // Sets an element in the array
@@ -113,7 +105,6 @@ public class BinaryHeap<E extends Comparable<E>> {
 		if(this.nbMaxElementsTas<this.currentSize){
 			this.nbMaxElementsTas=this.currentSize;
 		}
-		this.NbSommetsExplores++;
 		this.arraySet(index, x) ;
 		this.percolateUp(index) ;
     }

@@ -15,6 +15,10 @@ public class Pcc extends Algo {
     protected int destination ;
     
     protected float coutChemin;
+    
+    protected int nbSommetsExplores;
+    
+    protected int nbSommetsMarques;
 
 	protected Label [] tabLabel;
 
@@ -45,6 +49,9 @@ public class Pcc extends Algo {
 		this.zoneOrigine = gr.getZone () ;
 		this.destination = numSommetArrivee;
 
+		this.nbSommetsExplores=0;
+		this.nbSommetsMarques=0;
+		
 		this.tabLabel = new Label[gr.getTabNodes().length];
 	
 		this.Tas = new BinaryHeap<Label>();
@@ -62,27 +69,30 @@ public class Pcc extends Algo {
 		long startTime = System.currentTimeMillis();
 		this.tabLabel[this.origine].setCout(0.0d); // cout de 0 pour le sommet origine
 		this.Tas.insert(this.tabLabel[this.origine],this.origine); // insertion dans le tas du sommet origine
-		int numSommetMin = this.origine;
-		Node SommetMin=this.graphe.getTabNodes()[this.origine]; // numero du sommet min du tas
-		int numSommetSuccesseur;
-		Node SommetSuccesseur; // numero d'un sommet successeur au sommet min du tas
+		int numSommetMin = this.origine;  // numero du sommet min du tas
+		Node SommetMin=this.graphe.getTabNodes()[this.origine]; // sommet min du tas
 		while(!this.Tas.isEmpty()&& !(SommetMin.equals(this.graphe.getTabNodes()[this.destination]))){ //tant qu'il existe des sommets non marques
-			SommetMin = this.graphe.getTabNodes()[this.Tas.findMin().getSommetCourant()]; // recuperation du numero du sommet min du tas dans HashMap
-			numSommetMin = SommetMin.getNumNode();
-			this.tabLabel[numSommetMin].setCout(this.Tas.deleteMin().getCout()); //mise a jour du cout du label du sommet min 
-			this.tabLabel[numSommetMin].setMarq(); // mise  a jour du marquage du sommet min : marque
+			SommetMin = this.graphe.getTabNodes()[this.Tas.findMin().getSommetCourant()]; // recuperation du sommet min du tas
+			numSommetMin = SommetMin.getNumNode(); // et son numero
+			Label labelSommetMin=this.tabLabel[numSommetMin]; // et son label
+			labelSommetMin.setCout(this.Tas.deleteMin().getCout()); //mise a jour du cout du label du sommet min 
+			labelSommetMin.setMarq(); // mise  a jour du marquage du sommet min : marque
+			this.nbSommetsMarques++;
 			for (Route r : this.graphe.getTabNodes()[numSommetMin].getRoutesSuccesseurs()){ //pour tous les successeurs de sommet min
-				SommetSuccesseur=r.getNodeSucc(); // on recupere son numero de sommet
-				numSommetSuccesseur = SommetSuccesseur.getNumNode();
-				if(!this.tabLabel[numSommetSuccesseur].getMarq()){ // si ce sommet n'est pas marque
-					if(this.tabLabel[numSommetSuccesseur].getCout()>(this.tabLabel[numSommetMin].getCout()+r.getCoutRoute())){
-						this.tabLabel[numSommetSuccesseur].setCout(this.tabLabel[numSommetMin].getCout()+r.getCoutRoute());
-						this.tabLabel[numSommetSuccesseur].setPere(numSommetMin); // mise a jour du pere					
-						if(this.Tas.getHmap().containsKey(this.tabLabel[numSommetSuccesseur])){	
-							this.Tas.update(this.tabLabel[numSommetSuccesseur]);
+				Node sommetSuccesseur=r.getNodeSucc(); // on recupere le sommet successeur
+				int numSommetSuccesseur = sommetSuccesseur.getNumNode(); //et son numero
+				Label labelSommetSucc=this.tabLabel[numSommetSuccesseur]; // et son label
+				if(!labelSommetSucc.getMarq()){ // si ce sommet n'est pas marque
+					if(labelSommetSucc.getCout()>(labelSommetMin.getCout()+r.getCoutRoute())){
+						labelSommetSucc.setCout(labelSommetMin.getCout()+r.getCoutRoute());
+						labelSommetSucc.setPere(numSommetMin); // mise a jour du pere					
+						if(this.Tas.hmapContainsKey(labelSommetSucc)){	
+							this.Tas.update(labelSommetSucc);
 						}
 						else{
-							this.Tas.insert(this.tabLabel[numSommetSuccesseur],numSommetSuccesseur);
+							this.Tas.insert(labelSommetSucc,numSommetSuccesseur);
+							this.nbSommetsExplores++;
+							this.graphe.getDessin().drawPoint(sommetSuccesseur.getLong(), sommetSuccesseur.getLat(), 2);
 						}						
 					}
 				}
@@ -118,13 +128,14 @@ public class Pcc extends Algo {
 				tempN.add(this.graphe.getTabNodes()[numSommet]);
 				numSommet=this.tabLabel[numSommet].getPere();
 			}
+			
 			tempN.add(this.graphe.getTabNodes()[this.origine]);
-			this.coutChemin = this.graphe.calculCoutChemin();
 			this.reverseCopy(tempN);
+			this.coutChemin = this.graphe.calculCoutChemin();
+			
 			System.out.println("Cout du plus court chemin : "+this.coutChemin);
-			System.out.println("Nombre de sommets explores : "+this.Tas.getNbSommetsExplores());
-			System.out.println("Nombre de sommets marques : "+Label.getNbSommetsMarques());
-			Label.resetSommetsMarques();
+			System.out.println("Nombre de sommets explores : "+this.nbSommetsExplores);
+			System.out.println("Nombre de sommets marques : "+this.nbSommetsMarques);
 			System.out.println("Nombre maximum de sommets dans le tas : "+this.Tas.getNbMaxElementsTas());
 		}
 		else{

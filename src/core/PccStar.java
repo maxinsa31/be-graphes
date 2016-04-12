@@ -39,9 +39,8 @@ public class PccStar extends Pcc {
 			tempN.add(this.graphe.getTabNodes()[this.origine]);
 			this.reverseCopy(tempN);
 			System.out.println("Cout du plus court chemin : "+this.graphe.calculCoutChemin());
-			System.out.println("Nombre de sommets explores : "+this.Tas.getNbSommetsExplores());
-			System.out.println("Nombre de sommets marques : "+LabelPccStar.getNbSommetsMarques());
-			Label.resetSommetsMarques();
+			System.out.println("Nombre de sommets explores : "+this.nbSommetsExplores);
+			System.out.println("Nombre de sommets marques : "+this.nbSommetsMarques);
 			System.out.println("Nombre maximum de sommets dans le tas : "+this.Tas.getNbMaxElementsTas());
 		}
 		else{

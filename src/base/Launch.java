@@ -95,7 +95,7 @@ public class Launch {
 		    String nom_chemin = this.readarg.lireString ("Nom du fichier .path contenant le chemin ? ") ;
 		    graphe.verifierChemin(Openfile.open (nom_chemin), nom_chemin) ;
 			AfficherNb("Cout du chemin : ",graphe.calculCoutChemin());
-			if (graphe.getTabNodes().length <= 2000000){
+			if (graphe.getTabNodes().length <= 1000000){
 				graphe.DessinerChemin(dessin);
 			}else{
 				graphe.DessinerChemin2(dessin);
@@ -120,7 +120,7 @@ public class Launch {
 		
 		if (algo != null) { 
 			algo.run() ;
-			if (graphe.getTabNodes().length <= 2000000){
+			if (graphe.getTabNodes().length <= 1000000){
 				graphe.DessinerChemin(dessin);
 			}else{
 				graphe.DessinerChemin2(dessin);

@@ -45,7 +45,7 @@ public class Covoiturage extends Algo{
 					if(labelSommetSucc.getCout()>(this.algo.tabLabel[numSommetMin].getCout()+r.getCoutRoute())){
 						labelSommetSucc.setCout(this.algo.tabLabel[numSommetMin].getCout()+r.getCoutRoute());
 						labelSommetSucc.setPere(numSommetMin); // mise a jour du pere					
-						if(this.algo.Tas.getHmap().containsKey(labelSommetSucc)){							
+						if(this.algo.Tas.hmapContainsKey(labelSommetSucc)){							
 							this.algo.Tas.update(labelSommetSucc);
 						}
 						else{
