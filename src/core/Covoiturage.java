@@ -11,33 +11,41 @@ public class Covoiturage extends Algo{
 	
 	private Voyageur voiture;
 	
-	private int nbNodeZone;
-	
 	private Pcc algo;
+	
+	private Isochrone iso;
+	
+	private HashMap<Node,Double> sommeDesCouts;
 	
 	public Covoiturage(Pieton pieton, Voyageur voiture, Graphe gr, PrintStream fichierSortie, Readarg readarg){
 		super(gr,fichierSortie,readarg);
+		this.sommeDesCouts = new HashMap<Node,Double>();
 		this.pieton = pieton;
 		this.voiture = voiture;
 		this.algo = new Pcc(gr,fichierSortie,readarg,this.voiture.noeudDepart.getNumNode(),this.pieton.noeudDepart.getNumNode());
+		this.iso = new Isochrone(0f,gr,fichierSortie,readarg,this.pieton.noeudDepart.getNumNode());
 	}
 	
 	
-	public boolean Dijkstra1versN(int nbNoeudsEligibles){
+	public void Dijkstra1versN(){
 		
-		int reste = nbNoeudsEligibles;
+		int reste = this.sommeDesCouts.size();
 		this.algo.tabLabel[this.algo.origine].setCout(0.0d); // cout de 0 pour le sommet origine
 		this.algo.Tas.insert(this.algo.tabLabel[this.algo.origine],this.algo.origine); // insertion dans le tas du sommet origine
 		int numSommetMin = this.algo.origine;
-		Node SommetMin=this.graphe.getTabNodes()[this.algo.origine]; // numero du sommet min du tas
+		Node sommetMin=this.graphe.getTabNodes()[this.algo.origine]; // numero du sommet min du tas
 		int numSommetSuccesseur;
 		Node SommetSuccesseur; // numero d'un sommet successeur au sommet min du tas
-		while(reste >0){ //tant qu'il existe des sommets non marques
-			SommetMin = this.graphe.getTabNodes()[this.algo.Tas.getArray().get(0).getSommetCourant()]; // recuperation du numero du sommet min du tas dans HashMap
-			numSommetMin = SommetMin.getNumNode();
-			this.algo.tabLabel[numSommetMin].setCout(this.algo.Tas.deleteMin().getCout()); //mise a jour du cout du label du sommet min 
-			this.algo.tabLabel[numSommetMin].setMarq(); // mise  a jour du marquage du sommet min : marque
-			for (Route r : this.graphe.getTabNodes()[numSommetMin].getRoutesSuccesseurs()){ //pour tous les successeurs de sommet min
+		while(reste >0 && !this.algo.Tas.isEmpty()){ //tant qu'il existe des sommets non marques
+			sommetMin = this.graphe.getTabNodes()[this.algo.Tas.findMin().getSommetCourant()]; // recuperation du numero du sommet min du tas dans HashMap
+			if(this.sommeDesCouts.containsKey(sommetMin)){
+				reste--;
+			}
+			numSommetMin = sommetMin.getNumNode();
+			Label labelSommetMin = this.algo.tabLabel[numSommetMin];
+			labelSommetMin.setCout(this.algo.Tas.deleteMin().getCout()); //mise a jour du cout du label du sommet min 
+			labelSommetMin.setMarq(); // mise  a jour du marquage du sommet min : marque
+			for (Route r : sommetMin.getRoutesSuccesseurs()){ //pour tous les successeurs de sommet min
 				SommetSuccesseur = r.getNodeSucc(); // on recupere son numero de sommet
 				numSommetSuccesseur = SommetSuccesseur.getNumNode();
 				Label labelSommetSucc=this.algo.tabLabel[numSommetSuccesseur];
@@ -55,7 +63,6 @@ public class Covoiturage extends Algo{
 				}
 			}
 		}
-	return SommetMin.equals(this.graphe.getTabNodes()[this.algo.destination]);
 	
 	}
 	
@@ -63,27 +70,32 @@ public class Covoiturage extends Algo{
 		
 		System.out.println("Pcc de Voiture vers pieton ");
 		this.algo.run();
-		ArrayList<Node> noeudsEligibles = new ArrayList<Node>();
-		for(int i = 0;i< this.graphe.getTabNodes().length;i++){
-			if (Graphe.distance(this.pieton.noeudDepart.getLong(),this.pieton.noeudDepart.getLat(),this.graphe.getTabNodes()[i].getLong(),this.graphe.getTabNodes()[i].getLat())/(100d*(double)this.pieton.getVitessePieton()/6d)<= this.algo.coutChemin){
-				// cercle de noeud pour limiter la zone de recherche du point de rencontre 
-				noeudsEligibles.add(this.graphe.getTabNodes()[i]);
-			}
+		
+		System.out.println("Isochrone autour du pieton");
+		double coutMax = this.algo.coutChemin*this.pieton.getVitessePieton()/130.0d; // A MODIFIER /////////////////////////////////
+		this.iso.setCoutMax(coutMax);
+		this.iso.run();
+		
+		for(Node N : this.iso.nodesAtteignables){
+			this.sommeDesCouts.put(N,this.iso.tabLabel[N.getNumNode()].getCout());
+			System.out.println("Noeud n°"+N.getNumNode()+",cout : "+this.sommeDesCouts.get(N));
 		}
+		
 		System.out.println("Pcc (1->N) de Voiture vers la zone autour de pieton ");
 		
 		for(int i = 0; i < this.algo.tabLabel.length ; i++){
-			this.algo.tabLabel[i] = new Label(i); // initialisation des labels ( sommets non marques, cout infini, pas de sommet pred pcc)
+			this.algo.tabLabel[i] = new Label(i); // reinitialisation des labels ( sommets non marques, cout infini, pas de sommet pred pcc)
+		}
+		this.algo.Tas = new BinaryHeap<Label>();
+		this.Dijkstra1versN();
+		for(Node N : this.iso.nodesAtteignables){
+			this.sommeDesCouts.put(N, this.sommeDesCouts.get(N)+this.algo.tabLabel[N.getNumNode()].getCout());
+			System.out.println("Noeud n°"+N.getNumNode()+",cout : "+this.sommeDesCouts.get(N));
 		}
 		
-		float tab[] = new float[this.algo.tabLabel.length];
-		
-		
+		System.out.println("Pcc (1->N) de la destination vers la zone autour de pieton avec un graphe inverse ");
 		  
 		
 	}
 
-	public int getNbNodeZone(){
-		return this.nbNodeZone;
-	}
 }

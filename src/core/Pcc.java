@@ -39,6 +39,23 @@ public class Pcc extends Algo {
 		this.Tas = new BinaryHeap<Label>();
     }
     
+    public Pcc(Graphe gr, PrintStream sortie, Readarg readarg, int numSommetDepart) { //constructeur pour isochrone
+		super(gr, sortie, readarg) ;
+
+		this.zoneOrigine = gr.getZone () ;
+		this.origine = numSommetDepart ;
+
+		// Demander la zone et le sommet destination.
+		this.zoneOrigine = gr.getZone () ;
+
+		this.nbSommetsExplores=0;
+		this.nbSommetsMarques=0;
+		
+		this.tabLabel = new Label[gr.getTabNodes().length];
+	
+		this.Tas = new BinaryHeap<Label>();
+    }
+    
     public Pcc(Graphe gr, PrintStream sortie, Readarg readarg, int numSommetDepart,int numSommetArrivee) { //constructeur pour le covoiturage
 		super(gr, sortie, readarg) ;
 

@@ -111,7 +111,8 @@ public class Launch {
 			Voyageur voiture = new Voyageur(SommetVoiture,SommetArrivee);
 			Pieton pieton = new Pieton(SommetPieton,SommetArrivee);
 			
-			algo = new Covoiturage(pieton,voiture,graphe,this.fichierSortie(),this.readarg); break ;
+			algo = new Covoiturage(pieton,voiture,graphe,this.fichierSortie(),this.readarg); 
+			break ;
 			
 		default:
 		    System.out.println ("Choix de menu incorrect : " + choix) ;

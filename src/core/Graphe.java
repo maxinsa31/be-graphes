@@ -32,8 +32,11 @@ public class Graphe {
     // Numero de zone de la carte
     private int numzone ;
 
-	//tableau de noeuds
+	//tableau de noeuds pour le graphe
 	private Node[] tabNodes;
+	
+	//tableau de noeuds pour le graphe inverse
+	private Node[] tabNodesInverse;
 
 	//tableau mémorisant un chemin
 	private ArrayList<Node> Chemin;
@@ -91,6 +94,7 @@ public class Graphe {
 	    this.descripteurs = new Descripteur[nb_descripteurs] ;*/
 
 		this.tabNodes = new Node[nb_nodes];
+		this.tabNodesInverse = new Node[nb_nodes];
 		descripteurs = new Descripteur[nb_descripteurs];
 
 		int totalRoutes = 0;
@@ -103,6 +107,7 @@ public class Graphe {
         	longitude=((float)dis.readInt ()) / 1E6f;
         	latitude=((float)dis.readInt ()) / 1E6f;
         	this.tabNodes[num_node] = new Node(longitude,latitude,num_node);
+        	this.tabNodesInverse[num_node] = new Node(longitude,latitude,num_node);
 			nsuccesseurs_a_lire[num_node] = dis.readUnsignedByte() ;
        		totalRoutes+=nsuccesseurs_a_lire[num_node];
 	    }
@@ -169,10 +174,15 @@ public class Graphe {
 		    	if (succ_zone == numzone) {
 					dessin.drawLine(current_long, current_lat, this.tabNodes[dest_node].getLong(), this.tabNodes[dest_node].getLat()) ;
 					Route Road = new Route(this.tabNodes[dest_node],descripteurs[descr_num],longueur);
-					this.tabNodes[num_node].add_Routes(Road);			
+					this.tabNodes[num_node].add_Routes(Road);	
+					
 					sensUnique=Road.getDes().isSensUnique();
 					if(!sensUnique){
 						this.tabNodes[dest_node].add_Routes(new Route(this.tabNodes[num_node],descripteurs[descr_num],longueur));
+						this.tabNodesInverse[num_node].add_Routes(Road);
+					}
+					else{
+						this.tabNodesInverse[dest_node].add_Routes(new Route(this.tabNodes[num_node],descripteurs[descr_num],longueur));
 					}
           		}
 		    	if (nb_nodes < 2000000){

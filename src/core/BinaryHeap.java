@@ -69,6 +69,7 @@ public class BinaryHeap<E extends Comparable<E>> {
     	}
     }
 
+
     /**
      * Test if the heap is logically empty.
      * @return true if empty, false otherwise.
