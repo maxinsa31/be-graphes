@@ -26,8 +26,7 @@ public class Isochrone extends Pcc {
 		for(int i = 0; i < this.tabLabel.length ; i++){
 			this.tabLabel[i] = new Label(i); // initialisation des labels ( sommets non marques, cout infini, pas de sommet pred pcc)
 		}
-		
-		System.out.println("label de l'origine "+this.tabLabel[this.origine]);
+
 		this.tabLabel[this.origine].setCout(0.0d); // cout de 0 pour le sommet origine
 		this.Tas.insert(this.tabLabel[this.origine],this.origine); // insertion dans le tas du sommet origine
 		int numSommetMin = this.origine;  // numero du sommet min du tas

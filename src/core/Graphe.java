@@ -50,6 +50,10 @@ public class Graphe {
 	public Node[] getTabNodes(){
 		return this.tabNodes;
 	}
+	
+	public Node[] getTabNodesInverse(){
+		return this.tabNodesInverse;
+	}
 
 	public ArrayList<Node> getChemin(){
 		return this.Chemin;
@@ -177,12 +181,15 @@ public class Graphe {
 					this.tabNodes[num_node].add_Routes(Road);	
 					
 					sensUnique=Road.getDes().isSensUnique();
+					Route RoadInverse = new Route(this.tabNodes[num_node],descripteurs[descr_num],longueur);
 					if(!sensUnique){
-						this.tabNodes[dest_node].add_Routes(new Route(this.tabNodes[num_node],descripteurs[descr_num],longueur));
+						
+						this.tabNodes[dest_node].add_Routes(RoadInverse);
 						this.tabNodesInverse[num_node].add_Routes(Road);
+						this.tabNodesInverse[dest_node].add_Routes(RoadInverse);
 					}
 					else{
-						this.tabNodesInverse[dest_node].add_Routes(new Route(this.tabNodes[num_node],descripteurs[descr_num],longueur));
+						this.tabNodesInverse[dest_node].add_Routes(RoadInverse);
 					}
           		}
 		    	if (nb_nodes < 2000000){

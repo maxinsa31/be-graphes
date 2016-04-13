@@ -82,6 +82,46 @@ public class Pcc extends Algo {
 		}
 	}
 	
+	public boolean DijkstraInverse(){
+		long startTime = System.currentTimeMillis();
+		this.tabLabel[this.origine].setCout(0.0d); // cout de 0 pour le sommet origine
+		this.Tas.insert(this.tabLabel[this.origine],this.origine); // insertion dans le tas du sommet origine
+		int numSommetMin = this.origine;  // numero du sommet min du tas
+		Node SommetMin=this.graphe.getTabNodesInverse()[this.origine]; // sommet min du tas
+		while(!this.Tas.isEmpty()&& !(SommetMin.equals(this.graphe.getTabNodesInverse()[this.destination]))){ //tant qu'il existe des sommets non marques
+			SommetMin = this.graphe.getTabNodesInverse()[this.Tas.findMin().getSommetCourant()]; // recuperation du sommet min du tas
+			numSommetMin = SommetMin.getNumNode(); // et son numero
+			Label labelSommetMin=this.tabLabel[numSommetMin]; // et son label
+			labelSommetMin.setCout(this.Tas.deleteMin().getCout()); //mise a jour du cout du label du sommet min 
+			labelSommetMin.setMarq(); // mise  a jour du marquage du sommet min : marque
+			this.nbSommetsMarques++;
+			for (Route r : this.graphe.getTabNodesInverse()[numSommetMin].getRoutesSuccesseurs()){ //pour tous les successeurs de sommet min
+				Node sommetSuccesseur=r.getNodeSucc(); // on recupere le sommet successeur
+				int numSommetSuccesseur = sommetSuccesseur.getNumNode(); //et son numero
+				Label labelSommetSucc=this.tabLabel[numSommetSuccesseur]; // et son label
+				if(!labelSommetSucc.getMarq()){ // si ce sommet n'est pas marque
+					if(labelSommetSucc.getCout()>(labelSommetMin.getCout()+r.getCoutRoute())){
+						labelSommetSucc.setCout(labelSommetMin.getCout()+r.getCoutRoute());
+						labelSommetSucc.setPere(numSommetMin); // mise a jour du pere					
+						if(this.Tas.hmapContainsKey(labelSommetSucc)){	
+							this.Tas.update(labelSommetSucc);
+						}
+						else{
+							this.Tas.insert(labelSommetSucc,numSommetSuccesseur);
+							this.nbSommetsExplores++;
+							this.graphe.getDessin().drawPoint(sommetSuccesseur.getLong(), sommetSuccesseur.getLat(), 2);
+						}						
+					}
+				}
+			}
+		}
+		long endTime = System.currentTimeMillis();
+		float executionTime = (endTime - startTime) / 1000f;
+		System.out.println("Temps d'execution : "+executionTime+" secondes");
+		return SommetMin.equals(this.graphe.getTabNodesInverse()[this.destination]);
+	
+	}
+	
 	public boolean Dijkstra(){
 		long startTime = System.currentTimeMillis();
 		this.tabLabel[this.origine].setCout(0.0d); // cout de 0 pour le sommet origine
@@ -118,7 +158,7 @@ public class Pcc extends Algo {
 		long endTime = System.currentTimeMillis();
 		float executionTime = (endTime - startTime) / 1000f;
 		System.out.println("Temps d'execution : "+executionTime+" secondes");
-	return SommetMin.equals(this.graphe.getTabNodes()[this.destination]);
+		return SommetMin.equals(this.graphe.getTabNodes()[this.destination]);
 	
 	}
 
