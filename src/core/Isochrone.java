@@ -12,6 +12,14 @@ public class Isochrone extends Pcc {
 	
 	protected ArrayList<Node> nodesAtteignables;
 	
+	public void afficherNodesAtteignables(){
+		System.out.print("Sommets atteignables depuis "+this.origine+" : ");
+		for(Node N : nodesAtteignables){
+			System.out.print(N.getNumNode()+" ");
+		}
+		System.out.println();
+	}
+	
 	public void setCoutMax(double coutMax){
 		this.coutMax = coutMax;
 	}
@@ -26,7 +34,7 @@ public class Isochrone extends Pcc {
 		for(int i = 0; i < this.tabLabel.length ; i++){
 			this.tabLabel[i] = new Label(i); // initialisation des labels ( sommets non marques, cout infini, pas de sommet pred pcc)
 		}
-
+		System.out.println("Cout max autorise : "+this.coutMax);
 		this.tabLabel[this.origine].setCout(0.0d); // cout de 0 pour le sommet origine
 		this.Tas.insert(this.tabLabel[this.origine],this.origine); // insertion dans le tas du sommet origine
 		int numSommetMin = this.origine;  // numero du sommet min du tas
@@ -35,8 +43,9 @@ public class Isochrone extends Pcc {
 		while(labelSommetMin.getCout()<this.coutMax && !this.Tas.isEmpty()){ //tant que le cout min est inferieur au cout max autorisé et que le tas est non vide
 			this.graphe.getDessin().setColor(Color.red);
 			this.graphe.getDessin().drawPoint(sommetMin.getLong(), sommetMin.getLat(), 7);
-			sommetMin = this.graphe.getTabNodes()[this.Tas.findMin().getSommetCourant()]; // recuperation du sommet min du tas
 			this.nodesAtteignables.add(sommetMin);
+			sommetMin = this.graphe.getTabNodes()[this.Tas.findMin().getSommetCourant()]; // recuperation du sommet min du tas
+			
 			numSommetMin = sommetMin.getNumNode(); // et son numero
 			labelSommetMin = this.tabLabel[numSommetMin];
 			labelSommetMin.setCout(this.Tas.deleteMin().getCout()); //mise a jour du cout du label du sommet min 
@@ -47,8 +56,8 @@ public class Isochrone extends Pcc {
 				int numSommetSuccesseur = sommetSuccesseur.getNumNode(); //et son numero
 				Label labelSommetSucc=this.tabLabel[numSommetSuccesseur]; // et son label
 				if(!labelSommetSucc.getMarq()){ // si ce sommet n'est pas marque
-					if(labelSommetSucc.getCout()>(labelSommetMin.getCout()+r.getCoutRoute())){
-						labelSommetSucc.setCout(labelSommetMin.getCout()+r.getCoutRoute());
+					if(labelSommetSucc.getCout()>(labelSommetMin.getCout()+r.getCoutRoutePieton())){
+						labelSommetSucc.setCout(labelSommetMin.getCout()+r.getCoutRoutePieton());
 						labelSommetSucc.setPere(numSommetMin); // mise a jour du pere					
 						if(this.Tas.hmapContainsKey(labelSommetSucc)){	
 							this.Tas.update(labelSommetSucc);
@@ -62,6 +71,7 @@ public class Isochrone extends Pcc {
 					}
 				}
 			}
+			System.out.println("Cout sommet "+numSommetMin+" : "+labelSommetMin.getCout());
 		}
 	}
 }

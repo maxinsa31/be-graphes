@@ -112,6 +112,7 @@ public class Launch {
 			Pieton pieton = new Pieton(SommetPieton,SommetArrivee);
 			
 			algo = new Covoiturage(pieton,voiture,graphe,this.fichierSortie(),this.readarg); 
+			
 			break ;
 			
 		default:
@@ -121,11 +122,11 @@ public class Launch {
 		
 		if (algo != null) { 
 			algo.run() ;
-			if (graphe.getTabNodes().length <= 1000000){
+			/*if (graphe.getTabNodes().length <= 1000000){
 				graphe.DessinerChemin(dessin);
 			}else{
 				graphe.DessinerChemin2(dessin);
-			}
+			}*/
 		}
 	    }
 	    

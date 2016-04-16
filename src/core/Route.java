@@ -30,6 +30,10 @@ public class Route{
 	public double getCoutRoute(){
 		return (double)longueur/(100.0d/6.0d*(double)des.vitesseMax());
 	}		
+	
+	public double getCoutRoutePieton(){
+		return (double)longueur/(100.0d/6.0d*(double)Pieton.vitessePieton);
+	}
 
 	public ArrayList<Segment> getSegments(){
 		return this.segments;
