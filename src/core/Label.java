@@ -5,7 +5,6 @@ package core ;
  *   A vous de completer selon vos choix de conception.
  */
 
-import java.lang.*;
 
 public class Label implements Comparable<Label>{
 	private boolean marquage ; // Vrai si sommet entièrement fixé par l'algo

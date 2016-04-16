@@ -1,5 +1,4 @@
 package core;
-import java.lang.Comparable;
 
 public class LabelPccStar extends Label{
 	

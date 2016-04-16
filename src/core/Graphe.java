@@ -37,10 +37,6 @@ public class Graphe {
 	
 	//tableau de noeuds pour le graphe inverse
 	private Node[] tabNodesInverse;
-
-	//tableau mémorisant un chemin
-	private ArrayList<Node> Chemin;
-
 	
     //Getters
     public Dessin getDessin() { return dessin ; }
@@ -55,19 +51,13 @@ public class Graphe {
 		return this.tabNodesInverse;
 	}
 
-	public ArrayList<Node> getChemin(){
-		return this.Chemin;
-	}
-
-
     // Le constructeur cree le graphe en lisant les donnees depuis le DataInputStream
     public Graphe (String nomCarte, DataInputStream dis, Dessin dessin) {
 
 		Descripteur [] descripteurs;
 		this.nomCarte = nomCarte ;
 		this.dessin = dessin ;
-		Utils.calibrer(nomCarte, dessin) ;
-		this.Chemin = new ArrayList<Node>();	
+		Utils.calibrer(nomCarte, dessin) ;	
 	
 		// Lecture du fichier MAP. 
 		// Voir le fichier "FORMAT" pour le detail du format binaire.
@@ -287,8 +277,8 @@ public class Graphe {
      *  Charge un chemin depuis un fichier .path (voir le fichier FORMAT_PATH qui decrit le format)
      *  Verifie que le chemin est empruntable et calcule le temps de trajet.
      */
-    public void verifierChemin(DataInputStream dis, String nom_chemin) {
-	
+    public Chemin verifierChemin(DataInputStream dis, String nom_chemin) {
+    	Chemin c = new Chemin();
 	try {
 	    
 	    // Verification du magic number et de la version du format du fichier .path
@@ -305,7 +295,7 @@ public class Graphe {
 	    }
 
 	    int nb_noeuds = dis.readInt () ;
-		//this.tabChemin = new Chemin[nb_noeuds]; //   /!\
+	    
 	    // Origine du chemin
 	    int first_zone = dis.readUnsignedByte() ;
 	    int first_node = Utils.read24bits(dis) ;
@@ -324,7 +314,7 @@ public class Graphe {
 			current_zone = dis.readUnsignedByte() ;
 			current_node = Utils.read24bits(dis) ; 
 			// on mémorise le chemin dans un tableau contenant les noeuds du chemin
-			this.Chemin.add(this.tabNodes[current_node]);
+			c.ajouterSommet(this.tabNodes[current_node]);
 			System.out.println(" --> " + current_zone + ":" + current_node) ;
 	    }
 
@@ -338,106 +328,6 @@ public class Graphe {
 	    System.exit(1) ;
 	}
 
+	return c;
     }
-
-
-	public void DessinerChemin(Dessin dessin){
-
-		dessin.setColor(Color.magenta) ;
-
-		float current_long = this.Chemin.get(0).getLong();
-		float current_lat  = this.Chemin.get(0).getLat();
-
-		int cpt =0;
-		for (Node N : this.Chemin){
-			if(cpt< this.Chemin.size() -1){
-				dessin.drawPoint (N.getLong(), N.getLat(), 7);
-				for(Route R : N.getRoutesSuccesseurs()){
-					if (R.getNodeSucc().getNumNode() == this.Chemin.get(cpt+1).getNumNode()){
-						for (Segment S : R.getSegments()){
-                            if(S.getReverse()){
-                                current_long = this.Chemin.get(cpt+1).getLong();
-						        current_lat = this.Chemin.get(cpt+1).getLat();
-                            }
-							dessin.drawLine(current_long,current_lat,current_long+S.getDeltaLong(),current_lat+S.getDeltaLat());
-							current_long+=S.getDeltaLong();
-							current_lat+=S.getDeltaLat();
-						}
-                        if(R.getSegments().size() != 0){
-                            if(R.getSegments().get(0).getReverse()){
-                                dessin.drawLine(current_long,current_lat,this.Chemin.get(cpt).getLong(),this.Chemin.get(cpt).getLat());
-                            }
-                            else{                        
-						        dessin.drawLine(current_long,current_lat,this.Chemin.get(cpt+1).getLong(),this.Chemin.get(cpt+1).getLat());
-                            }
-                        }
-                        else{
-                            dessin.drawLine(current_long,current_lat,this.Chemin.get(cpt+1).getLong(),this.Chemin.get(cpt+1).getLat());
-                        }
-						current_long = this.Chemin.get(cpt+1).getLong();
-						current_lat = this.Chemin.get(cpt+1).getLat();
-					}
-				}				
-			}		
-			cpt++;
-		}
-		dessin.drawPoint (this.Chemin.get(cpt-1).getLong(), this.Chemin.get(cpt-1).getLat(), 7);
-		this.Chemin.clear();
-	}
-
-	public void DessinerChemin2(Dessin dessin){
-		dessin.setColor(Color.blue) ;
-		int cpt =0;
-		for (Node N : this.Chemin){
-			if(cpt< this.Chemin.size() -1){
-				dessin.drawPoint (N.getLong(), N.getLat(), 7);
-				dessin.drawLine(N.getLong(),N.getLat(),this.Chemin.get(cpt+1).getLong(),this.Chemin.get(cpt+1).getLat());
-			}
-			cpt++;
-		}
-		dessin.drawPoint (this.Chemin.get(cpt-1).getLong(), this.Chemin.get(cpt-1).getLat(), 7);
-		this.Chemin.clear();
-	}
-
-
-	//cout en temps
-	public float calculCoutChemin(){
-		float cout = 0.0f;
-		float min = 10000000.0f;
-		int cpt = 0;
-		for (Node N : this.Chemin){ // nb noeuds du chemin
-			if (cpt < this.Chemin.size()-1){
-				for(Route R : N.getRoutesSuccesseurs()){
-					if ( (((float)R.getLongueur())/(100.0f/6.0f*R.getDes().vitesseMax()))< min && R.getNodeSucc().getNumNode()==this.Chemin.get(cpt+1).getNumNode()){//////////////////////////////////////////////////////////////////////
-						min =(((float)R.getLongueur())/(100.0f/6.0f*R.getDes().vitesseMax())) ;			
-					}
-				}
-				cout+=min; 
-				min = 10000000.0f;	
-			}
-			cpt++;
-		}
-		return cout;
-	}
-	//distance
-	public float calculCoutChemin2(){
-		int cout = 0;
-		int min = 1000000;
-		int cpt = 0;
-		for (Node N : this.Chemin){ // nb noeuds du chemin
-			if (cpt < this.Chemin.size()-1){
-				for(Route R : N.getRoutesSuccesseurs()){
-					if ( (R.getLongueur()< min) && R.getNodeSucc().getNumNode()==this.Chemin.get(cpt+1).getNumNode()){//////////////////////////////////////////////////////////////////////
-						min =R.getLongueur();			
-					}
-				}
-				cout+=min; 
-				min = 1000000;	
-			}
-			cpt++;
-		}
-		return cout;
-	}
-
-
 }

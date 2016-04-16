@@ -16,17 +16,12 @@ public class PccStar extends Pcc {
 
 	System.out.println("Run PCC-Star de " + zoneOrigine + ":" + origine + " vers " + zoneDestination + ":" + destination) ;
 
-	// A vous d'implementer la recherche de plus court chemin A*
 		System.out.println("Destination : "+destination);
 		for(int i = 0; i < this.tabLabel.length ; i++){
 			// initialisation des labels ( sommets non marques, cout infini, pas de sommet pred pcc)
 			double distanceI = Graphe.distance((double)this.graphe.getTabNodes()[i].getLong(), (double)this.graphe.getTabNodes()[i].getLat(),(double)this.graphe.getTabNodes()[destination].getLong() , (double)this.graphe.getTabNodes()[destination].getLat());
 			this.tabLabel[i] = new LabelPccStar(i,distanceI/(100d*130d/6d));//vitesse 130km/h dist/(100d*130d/6d)
-			//System.out.println("distance vol d'oiseau depuis "+i+" :"+distanceI); 
-		}		
-		//System.out.println("ICI : 139 - 25 : "+Graphe.distance((double)this.graphe.getTabNodes()[25].getLong(),(double)this.graphe.getTabNodes()[25].getLat(),(double)this.graphe.getTabNodes()[139].getLong(),(double)this.graphe.getTabNodes()[139].getLat()));			
-			//this.tabLabel[i] = new LabelPccStar(i,Math.abs( (double)this.graphe.getTabNodes()[i].getLong() - (double)this.graphe.getTabNodes()[destination].getLong()) + Math.abs((double)this.graphe.getTabNodes()[destination].getLat() - (double)this.graphe.getTabNodes()[i].getLat()));
-		
+		}
 		this.graphe.getDessin().setColor(Color.cyan);
 		if(Dijkstra()){ 
 			int numSommet=this.destination;
@@ -37,11 +32,17 @@ public class PccStar extends Pcc {
 				numSommet=this.tabLabel[numSommet].getPere();
 			}
 			tempN.add(this.graphe.getTabNodes()[this.origine]);
-			this.reverseCopy(tempN);
-			System.out.println("Cout du plus court chemin : "+this.graphe.calculCoutChemin());
+			chemin.reverseCopy(tempN);
+			chemin.calculCoutChemin();
+			System.out.println("Cout du plus court chemin : "+chemin.getCout());
 			System.out.println("Nombre de sommets explores : "+this.nbSommetsExplores);
 			System.out.println("Nombre de sommets marques : "+this.nbSommetsMarques);
 			System.out.println("Nombre maximum de sommets dans le tas : "+this.Tas.getNbMaxElementsTas());
+			if (this.graphe.getTabNodes().length <= 1000000){
+				chemin.DessinerChemin(this.graphe.getDessin());
+			}else{
+				chemin.DessinerChemin2(this.graphe.getDessin());
+			}
 		}
 		else{
 			System.out.println("Ce chemin est inexistant ...");

@@ -14,8 +14,6 @@ public class Pcc extends Algo {
     protected int zoneDestination ;
     protected int destination ;
     
-    protected float coutChemin;
-    
     protected int nbSommetsExplores;
     
     protected int nbSommetsMarques;
@@ -23,6 +21,8 @@ public class Pcc extends Algo {
 	protected Label [] tabLabel;
 
 	protected BinaryHeap<Label> Tas;
+	
+	protected Chemin chemin;
 
     public Pcc(Graphe gr, PrintStream sortie, Readarg readarg) {
 		super(gr, sortie, readarg) ;
@@ -37,6 +37,8 @@ public class Pcc extends Algo {
 		this.tabLabel = new Label[gr.getTabNodes().length];
 	
 		this.Tas = new BinaryHeap<Label>();
+		
+		this.chemin = new Chemin();
     }
     
     public Pcc(Graphe gr, PrintStream sortie, Readarg readarg, int numSommetDepart) { //constructeur pour isochrone
@@ -54,6 +56,8 @@ public class Pcc extends Algo {
 		this.tabLabel = new Label[gr.getTabNodes().length];
 	
 		this.Tas = new BinaryHeap<Label>();
+		
+		this.chemin = new Chemin();
     }
     
     public Pcc(Graphe gr, PrintStream sortie, Readarg readarg, int numSommetDepart,int numSommetArrivee) { //constructeur pour le covoiturage
@@ -72,15 +76,14 @@ public class Pcc extends Algo {
 		this.tabLabel = new Label[gr.getTabNodes().length];
 	
 		this.Tas = new BinaryHeap<Label>();
+		
+		this.chemin = new Chemin();
+    }
+    
+    public Chemin getChemin(){
+    	return this.chemin;
     }
 
-
-
-	public void reverseCopy(ArrayList<Node> tabC){
-		for (Node N : tabC){
-			this.graphe.getChemin().add(0,N);
-		}
-	}
 	
 	public boolean DijkstraInverse(){
 		long startTime = System.currentTimeMillis();
@@ -159,7 +162,6 @@ public class Pcc extends Algo {
 		float executionTime = (endTime - startTime) / 1000f;
 		System.out.println("Temps d'execution : "+executionTime+" secondes");
 		return SommetMin.equals(this.graphe.getTabNodes()[this.destination]);
-	
 	}
 
     public void run() {
@@ -170,9 +172,6 @@ public class Pcc extends Algo {
 		for(int i = 0; i < this.tabLabel.length ; i++){
 			this.tabLabel[i] = new Label(i); // initialisation des labels ( sommets non marques, cout infini, pas de sommet pred pcc)
 		}
-		
-		// A vous d'implementer la recherche de plus court chemin.
-		
 				
 		
 		
@@ -187,13 +186,18 @@ public class Pcc extends Algo {
 			}
 			
 			tempN.add(this.graphe.getTabNodes()[this.origine]);
-			this.reverseCopy(tempN);
-			this.coutChemin = this.graphe.calculCoutChemin();
+			chemin.reverseCopy(tempN);
+			chemin.calculCoutChemin();
 			
-			System.out.println("Cout du plus court chemin : "+this.coutChemin);
+			System.out.println("Cout du plus court chemin : "+chemin.getCout());
 			System.out.println("Nombre de sommets explores : "+this.nbSommetsExplores);
 			System.out.println("Nombre de sommets marques : "+this.nbSommetsMarques);
 			System.out.println("Nombre maximum de sommets dans le tas : "+this.Tas.getNbMaxElementsTas());
+			if (this.graphe.getTabNodes().length <= 1000000){
+				chemin.DessinerChemin(this.graphe.getDessin());
+			}else{
+				chemin.DessinerChemin2(this.graphe.getDessin());
+			}
 		}
 		else{
 			System.out.println("Ce chemin est inexistant ...");

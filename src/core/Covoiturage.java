@@ -86,13 +86,13 @@ public class Covoiturage extends Algo{
 		this.algo.run();
 		
 		System.out.println("Isochrone autour du pieton");
-		double coutMax = this.algo.coutChemin*this.pieton.getVitessePieton()/130.0d; // A MODIFIER /////////////////////////////////
+		double coutMax = this.algo.getChemin().getCout();
 		this.iso.setCoutMax(coutMax);
 		this.iso.run();
+		this.iso.afficherNodesAtteignables();
 		
 		for(Node N : this.iso.nodesAtteignables){
 			this.sommeDesCouts.put(N,this.iso.tabLabel[N.getNumNode()].getCout());
-			//System.out.println("Noeud n°"+N.getNumNode()+",cout : "+this.sommeDesCouts.get(N));
 		}
 		
 		System.out.println("Pcc (1->N) de Voiture vers la zone autour de pieton ");
@@ -104,11 +104,10 @@ public class Covoiturage extends Algo{
 		this.Dijkstra1versN(false); // argument false car dijkstra pas inverse
 		for(Node N : this.iso.nodesAtteignables){
 			this.sommeDesCouts.put(N, this.sommeDesCouts.get(N)+this.algo.tabLabel[N.getNumNode()].getCout());
-			//System.out.println("Noeud n°"+N.getNumNode()+",cout : "+this.sommeDesCouts.get(N));
 		}
 		
 		System.out.println("Pcc (1->N) de la destination vers la zone autour de pieton avec un graphe inverse ");
-		
+		this.algo.origine = this.voiture.noeudArrivee.getNumNode();
 		for(int i = 0; i < this.algo.tabLabel.length ; i++){
 			this.algo.tabLabel[i] = new Label(i); // reinitialisation des labels ( sommets non marques, cout infini, pas de sommet pred pcc)
 		}
@@ -122,7 +121,6 @@ public class Covoiturage extends Algo{
 			if(nouveauCout<this.sommeDesCouts.get(nodeRencontre)){
 				nodeRencontre=N;
 			}
-			//System.out.println("Noeud n°"+N.getNumNode()+",cout : "+this.sommeDesCouts.get(N));
 		}
 		System.out.println("temps total "+nouveauCout);
 		this.graphe.getDessin().setColor(Color.pink);
