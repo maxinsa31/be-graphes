@@ -193,11 +193,11 @@ public class Pcc extends Algo {
 			System.out.println("Nombre de sommets explores : "+this.nbSommetsExplores);
 			System.out.println("Nombre de sommets marques : "+this.nbSommetsMarques);
 			System.out.println("Nombre maximum de sommets dans le tas : "+this.Tas.getNbMaxElementsTas());
-			if (this.graphe.getTabNodes().length <= 1000000){
+			/*if (this.graphe.getTabNodes().length <= 1000000){
 				chemin.DessinerChemin(this.graphe.getDessin());
 			}else{
 				chemin.DessinerChemin2(this.graphe.getDessin());
-			}
+			}*/
 		}
 		else{
 			System.out.println("Ce chemin est inexistant ...");

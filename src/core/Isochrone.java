@@ -53,7 +53,7 @@ public class Isochrone extends Pcc {
 				labelSommetMin.setCout(this.Tas.deleteMin().getCout()); //mise a jour du cout du label du sommet min 
 				labelSommetMin.setMarq(); // mise  a jour du marquage du sommet min : marque
 				this.nbSommetsMarques++;
-				for (Route r : this.graphe.getTabNodes()[numSommetMin].getRoutesSuccesseurs()){ //pour tous les successeurs de sommet min
+				/*for (Route r : this.graphe.getTabNodes()[numSommetMin].getRoutesSuccesseurs()){ //pour tous les successeurs de sommet min
 					Node sommetSuccesseur=r.getNodeSucc(); // on recupere le sommet successeur
 					int numSommetSuccesseur = sommetSuccesseur.getNumNode(); //et son numero
 					Label labelSommetSucc=this.tabLabel[numSommetSuccesseur]; // et son label
@@ -72,7 +72,42 @@ public class Isochrone extends Pcc {
 							}						
 						}
 					}
+				}*/
+				
+				ArrayList<Route> routesPieton= new ArrayList<Route>();
+				for(Route r : this.graphe.getTabNodes()[numSommetMin].getRoutesSuccesseurs()){
+					if(r.getDes().vitesseMax()<Pieton.vitesseRoutesInterdites){// si ce n'est pas une route réservée aux voitures 
+						routesPieton.add(r);
+					}
 				}
+				
+				for(Route r : this.graphe.getTabNodesInverse()[numSommetMin].getRoutesSuccesseurs()){
+					if(r.getDes().vitesseMax()<Pieton.vitesseRoutesInterdites){// si ce n'est pas une route réservée aux voitures 
+						routesPieton.add(r);
+					}
+				}
+				
+				
+				for (Route r : routesPieton){ //pour tous les successeurs de sommet min
+					Node sommetSuccesseur=r.getNodeSucc(); // on recupere le sommet successeur
+					int numSommetSuccesseur = sommetSuccesseur.getNumNode(); //et son numero
+					Label labelSommetSucc=this.tabLabel[numSommetSuccesseur]; // et son label
+					if(!labelSommetSucc.getMarq()){ // si ce sommet n'est pas marque
+						if(labelSommetSucc.getCout()>(labelSommetMin.getCout()+r.getCoutRoutePieton())){
+							labelSommetSucc.setCout(labelSommetMin.getCout()+r.getCoutRoutePieton());
+							labelSommetSucc.setPere(numSommetMin); // mise a jour du pere					
+							if(this.Tas.hmapContainsKey(labelSommetSucc)){	
+								this.Tas.update(labelSommetSucc);
+							}else{
+								this.Tas.insert(labelSommetSucc,numSommetSuccesseur);
+								this.nbSommetsExplores++;
+								this.graphe.getDessin().setColor(Color.green);
+								this.graphe.getDessin().drawPoint(sommetSuccesseur.getLong(), sommetSuccesseur.getLat(), 2);
+							}						
+						}
+					}
+				}
+				 
 			}
 			System.out.println("Cout sommet "+numSommetMin+" : "+labelSommetMin.getCout());
 		}

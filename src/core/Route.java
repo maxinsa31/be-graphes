@@ -53,6 +53,7 @@ public class Route{
 			}
 			else{
 				this.segments.add(new Segment(S.getDeltaLong(),S.getDeltaLat(), false));
+				//this.segments.add(new Segment(S.getDeltaLong(),S.getDeltaLat(), true));
 			}
 			cpt++;
 		}

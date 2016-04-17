@@ -20,6 +20,10 @@ public class Chemin {
 		return this.cout;
 	}
 	
+	public ArrayList <Node> getChemin(){
+		return this.chemin;
+	}
+	
 	public void ajouterSommet(Node n){
 		this.chemin.add(n);
 	}
@@ -31,8 +35,6 @@ public class Chemin {
 	}
 	
 	public void DessinerChemin(Dessin dessin){
-
-		dessin.setColor(Color.magenta) ;
 
 		float current_long = chemin.get(0).getLong();
 		float current_lat  = chemin.get(0).getLat();

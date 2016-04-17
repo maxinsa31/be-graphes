@@ -22,6 +22,13 @@ public class Label implements Comparable<Label>{
 		this.cout = Double.POSITIVE_INFINITY;
 	}
 	
+	public Label(int sommetCourant, boolean marquage, int pere, double cout){
+		this.sommetCourant = sommetCourant ;
+		this.marquage = marquage ; 
+		this.pere = pere ;
+		this.cout = cout ;
+	}
+	
 	public boolean getMarq(){
 		return this.marquage;
 	}
