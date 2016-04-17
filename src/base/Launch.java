@@ -123,11 +123,6 @@ public class Launch {
 		
 		if (algo != null) { 
 			algo.run() ;
-			/*if (graphe.getTabNodes().length <= 1000000){
-				graphe.DessinerChemin(dessin);
-			}else{
-				graphe.DessinerChemin2(dessin);
-			}*/
 		}
 	    }
 	    

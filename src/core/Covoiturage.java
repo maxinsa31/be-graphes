@@ -92,7 +92,7 @@ public class Covoiturage extends Algo{
 		this.iso.afficherNodesAtteignables();
 		
 		for(Node N : this.iso.nodesAtteignables){
-			this.sommeDesCouts.put(N,this.iso.tabLabel[N.getNumNode()].getCout());
+			this.sommeDesCouts.put(N,0.0d);
 		}
 		
 		System.out.println("Pcc (1->N) de Voiture vers la zone autour de pieton ");
@@ -103,7 +103,7 @@ public class Covoiturage extends Algo{
 		this.algo.Tas = new BinaryHeap<Label>();
 		this.Dijkstra1versN(false); // argument false car dijkstra pas inverse
 		for(Node N : this.iso.nodesAtteignables){
-			this.sommeDesCouts.put(N, this.sommeDesCouts.get(N)+this.algo.tabLabel[N.getNumNode()].getCout());
+			this.sommeDesCouts.put(N, this.algo.tabLabel[N.getNumNode()].getCout());
 		}
 		
 		System.out.println("Pcc (1->N) de la destination vers la zone autour de pieton avec un graphe inverse ");
