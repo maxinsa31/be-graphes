@@ -47,6 +47,7 @@ public class Isochrone extends Pcc {
 			sommetMin = this.graphe.getTabNodes()[this.Tas.findMin().getSommetCourant()]; // recuperation du sommet min du tas
 			numSommetMin = sommetMin.getNumNode(); // et son numero
 			labelSommetMin = this.tabLabel[numSommetMin];
+
 			if(this.Tas.findMin().getCout()<this.coutMax){
 				this.nodesAtteignables.add(sommetMin);
 				labelSommetMin.setCout(this.Tas.deleteMin().getCout()); //mise a jour du cout du label du sommet min 
