@@ -43,8 +43,10 @@ public class Chemin {
 		for (Node N : chemin){
 			if(cpt< chemin.size() -1){
 				dessin.drawPoint (N.getLong(), N.getLat(), 7);
+				boolean trace = false;
 				for(Route R : N.getRoutesSuccesseurs()){
 					if (R.getNodeSucc().getNumNode() == chemin.get(cpt+1).getNumNode()){
+						trace = true;
 						for (Segment S : R.getSegments()){
                             if(S.getReverse()){
                                 current_long = chemin.get(cpt+1).getLong();
@@ -68,7 +70,39 @@ public class Chemin {
 						current_long = chemin.get(cpt+1).getLong();
 						current_lat = chemin.get(cpt+1).getLat();
 					}
-				}				
+					
+				}
+				if(!trace){
+					current_long = chemin.get(cpt+1).getLong();
+			        current_lat = chemin.get(cpt+1).getLat();
+					for (Route R2 : chemin.get(cpt+1).getRoutesSuccesseurs()){
+						if(R2.getNodeSucc().getNumNode() == N.getNumNode()){
+							for (Segment S : R2.getSegments()){
+	                            if(S.getReverse()){
+	                                current_long = chemin.get(cpt).getLong();
+							        current_lat = chemin.get(cpt).getLat();
+	                            }
+								dessin.drawLine(current_long,current_lat,current_long+S.getDeltaLong(),current_lat+S.getDeltaLat());
+								current_long+=S.getDeltaLong();
+								current_lat+=S.getDeltaLat();
+							}
+	                        if(R2.getSegments().size() != 0){
+	                            if(R2.getSegments().get(0).getReverse()){
+	                                dessin.drawLine(current_long,current_lat,chemin.get(cpt+1).getLong(),chemin.get(cpt+1).getLat());
+	                            }
+	                            else{                        
+							        dessin.drawLine(current_long,current_lat,chemin.get(cpt).getLong(),chemin.get(cpt).getLat());
+	                            }
+	                        }
+	                        else{
+	                            dessin.drawLine(current_long,current_lat,chemin.get(cpt).getLong(),chemin.get(cpt).getLat());
+	                        }
+							current_long = chemin.get(cpt+1).getLong();
+							current_lat = chemin.get(cpt+1).getLat();
+						}
+					}
+				}
+				
 			}		
 			cpt++;
 		}

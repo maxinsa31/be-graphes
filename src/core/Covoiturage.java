@@ -119,62 +119,64 @@ public class Covoiturage extends Algo{
 		}
 		this.algo.Tas = new BinaryHeap<Label>();
 		this.Dijkstra1versN(true); // argument false car dijkstra pas inverse
-		Node nodeRencontre = this.iso.nodesAtteignables.get(0);
-		double nouveauCout=0;
-		for(Node N : this.iso.nodesAtteignables){
-			nouveauCout = this.sommeDesCouts.get(N)+this.algo.tabLabel[N.getNumNode()].getCout();
-			this.sommeDesCouts.put(N, nouveauCout);
-			if(nouveauCout<this.sommeDesCouts.get(nodeRencontre)){
-				nodeRencontre=N;
+		if(this.iso.nodesAtteignables.size()>0){
+			Node nodeRencontre = this.iso.nodesAtteignables.get(0);
+			double nouveauCout=0;
+			for(Node N : this.iso.nodesAtteignables){
+				nouveauCout = this.sommeDesCouts.get(N)+this.algo.tabLabel[N.getNumNode()].getCout();
+				this.sommeDesCouts.put(N, nouveauCout);
+				if(nouveauCout<this.sommeDesCouts.get(nodeRencontre)){
+					nodeRencontre=N;
+				}
 			}
-		}
 		
-		Label [] labelDversP = new Label[this.graphe.getTabNodes().length];		
-		for(int i = 0 ; i< this.graphe.getTabNodes().length ; i++){
-			Label intermediaire = this.algo.tabLabel[i];
-			labelDversP[i] = new Label(intermediaire.getSommetCourant(),intermediaire.getMarq(),intermediaire.getPere(),intermediaire.getCout());
-		}
+			Label [] labelDversP = new Label[this.graphe.getTabNodes().length];		
+			for(int i = 0 ; i< this.graphe.getTabNodes().length ; i++){
+				Label intermediaire = this.algo.tabLabel[i];
+				labelDversP[i] = new Label(intermediaire.getSommetCourant(),intermediaire.getMarq(),intermediaire.getPere(),intermediaire.getCout());
+			}
 		
-		// Tracé du chemin du Pieton vers le point de rencontre
-		Chemin cheminPversP = new Chemin();		
-		int numSommet = nodeRencontre.getNumNode();
-		ArrayList<Node> tempP=new ArrayList<Node>();
-		while(numSommet!=this.pieton.noeudDepart.getNumNode()){
+			// Tracé du chemin du Pieton vers le point de rencontre
+			Chemin cheminPversP = new Chemin();		
+			int numSommet = nodeRencontre.getNumNode();
+			ArrayList<Node> tempP=new ArrayList<Node>();
+			while(numSommet!=this.pieton.noeudDepart.getNumNode()){
+				tempP.add(this.graphe.getTabNodes()[numSommet]);
+				numSommet=this.iso.tabLabel[numSommet].getPere();
+			}
 			tempP.add(this.graphe.getTabNodes()[numSommet]);
-			numSommet=this.iso.tabLabel[numSommet].getPere();
-		}
-		tempP.add(this.graphe.getTabNodes()[numSommet]);
-		cheminPversP.reverseCopy(tempP);
-		this.graphe.getDessin().setColor(Color.green);
-		cheminPversP.DessinerChemin(this.graphe.getDessin());
+			cheminPversP.reverseCopy(tempP);
+			this.graphe.getDessin().setColor(Color.green);
+			cheminPversP.DessinerChemin(this.graphe.getDessin());
 		
-		// Tracé du chemin de Voiture vers le point de rencontre
-		Chemin cheminVversP = new Chemin();		
-		numSommet = nodeRencontre.getNumNode();
-		ArrayList<Node> tempV=new ArrayList<Node>();
-		while(numSommet!=this.voiture.noeudDepart.getNumNode()){
+			// Tracé du chemin de Voiture vers le point de rencontre
+			Chemin cheminVversP = new Chemin();		
+			numSommet = nodeRencontre.getNumNode();
+			ArrayList<Node> tempV=new ArrayList<Node>();
+			while(numSommet!=this.voiture.noeudDepart.getNumNode()){
+				tempV.add(this.graphe.getTabNodes()[numSommet]);
+				numSommet=labelVversP[numSommet].getPere();
+			}
 			tempV.add(this.graphe.getTabNodes()[numSommet]);
-			numSommet=labelVversP[numSommet].getPere();
-		}
-		tempV.add(this.graphe.getTabNodes()[numSommet]);
-		cheminVversP.reverseCopy(tempV);
-		this.graphe.getDessin().setColor(Color.magenta);
-		cheminVversP.DessinerChemin(this.graphe.getDessin());
+			cheminVversP.reverseCopy(tempV);
+			this.graphe.getDessin().setColor(Color.magenta);
+			cheminVversP.DessinerChemin(this.graphe.getDessin());
 		
-		// Tracé du chemin de la Destination vers le point de rencontre
-		Chemin cheminDversP = new Chemin();		
-		numSommet = nodeRencontre.getNumNode();
-		while(numSommet!=this.voiture.noeudArrivee.getNumNode()){
+			// Tracé du chemin de la Destination vers le point de rencontre
+			Chemin cheminDversP = new Chemin();		
+			numSommet = nodeRencontre.getNumNode();
+			while(numSommet!=this.voiture.noeudArrivee.getNumNode()){
+				cheminDversP.getChemin().add(this.graphe.getTabNodes()[numSommet]);
+				numSommet=labelDversP[numSommet].getPere();
+			}
 			cheminDversP.getChemin().add(this.graphe.getTabNodes()[numSommet]);
-			numSommet=labelDversP[numSommet].getPere();
-		}
-		cheminDversP.getChemin().add(this.graphe.getTabNodes()[numSommet]);
-		this.graphe.getDessin().setColor(Color.cyan);
-		cheminDversP.DessinerChemin(this.graphe.getDessin());
+			this.graphe.getDessin().setColor(Color.cyan);
+			cheminDversP.DessinerChemin(this.graphe.getDessin());
 		
-		System.out.println("temps total "+nouveauCout);
-		this.graphe.getDessin().setColor(Color.black);
-		this.graphe.getDessin().drawPoint(nodeRencontre.getLong(), nodeRencontre.getLat(), 10);
+			System.out.println("temps total "+nouveauCout);
+			this.graphe.getDessin().setColor(Color.black);
+			this.graphe.getDessin().drawPoint(nodeRencontre.getLong(), nodeRencontre.getLat(), 10);
+		}
 	}
 
 }
