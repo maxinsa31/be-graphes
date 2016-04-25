@@ -17,8 +17,8 @@ public class Readarg {
     private final BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
     public Readarg(String[] argz) {
-	this.args = argz ;
-	this.next = 0 ;
+    	this.args = argz ;
+    	this.next = 0 ;
     }
 
     /** 
@@ -27,25 +27,25 @@ public class Readarg {
      */
     public String lireString (String msg) {
 	
-	String resultat = "" ;
+    	String resultat = "" ;
 
-	System.out.print(msg) ;
+    	System.out.print(msg) ;
 	
-	if (this.next >= this.args.length) {
-	    try {
-		resultat = br.readLine () ;
-	    } catch (Exception e) {
-		System.err.println ("Erreur de lecture de l'entree standard.") ;
-		System.exit(1) ;
-	    }
-	}
-	else {
-	    resultat = this.args[this.next] ;
-	    this.next++ ;
-	    System.out.println (resultat) ;
-	}
+    	if (this.next >= this.args.length) {
+    		try {
+    			resultat = br.readLine () ;
+    		} catch (Exception e) {
+    			System.err.println ("Erreur de lecture de l'entree standard.") ;
+    			System.exit(1) ;
+    		}
+    	}
+    	else {
+    		resultat = this.args[this.next] ;
+    		this.next++ ;
+    		System.out.println (resultat) ;
+    	}
 
-	return resultat ;
+    	return resultat ;
     }
 
 
@@ -54,16 +54,16 @@ public class Readarg {
      * @param msg  Message affiche avant de demander l'entier
      */
     public int lireInt (String msg) {
-	String lu = lireString (msg) ;
-	int result = 0 ;
-	try {
-	    result = Integer.parseInt(lu) ;
-	}
-	catch (Exception e) {
-	    System.err.println ("Un entier est attendu mais je lis " + lu) ;
-	    System.exit(1) ;
-	}
-	return result ;
+    	String lu = lireString (msg) ;
+    	int result = 0 ;
+    	try {
+    		result = Integer.parseInt(lu) ;
+    	}
+    	catch (Exception e) {
+    		System.err.println ("Un entier est attendu mais je lis " + lu) ;
+    		System.exit(1) ;
+    	}
+    	return result ;
     }
 
     /** 
@@ -71,16 +71,16 @@ public class Readarg {
      * @param msg  Message affiche avant de demander le float.
      */
     public float lireFloat (String msg) {
-	String lu = lireString (msg) ;
-	float result = 0 ;
-	try {
-	    result = Float.parseFloat(lu) ;
-	}
-	catch (Exception e) {
-	    System.err.println ("Un reel est attendu mais je lis " + lu) ;
-	    System.exit(1) ;
-	}
+    	String lu = lireString (msg) ;
+    	float result = 0 ;
+    	try {
+    		result = Float.parseFloat(lu) ;
+    	}
+    	catch (Exception e) {
+    		System.err.println ("Un reel est attendu mais je lis " + lu) ;
+    		System.exit(1) ;
+    	}
 	
-	return result ;
+    	return result ;
     }
 }

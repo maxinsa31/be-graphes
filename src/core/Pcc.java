@@ -189,7 +189,7 @@ public class Pcc extends Algo {
 			chemin.reverseCopy(tempN);
 			chemin.calculCoutChemin();
 			
-			System.out.println("Cout du plus court chemin : "+chemin.getCout());
+			System.out.println("Cout du plus court chemin : "+(float)chemin.getCout());
 			System.out.println("Nombre de sommets explores : "+this.nbSommetsExplores);
 			System.out.println("Nombre de sommets marques : "+this.nbSommetsMarques);
 			System.out.println("Nombre maximum de sommets dans le tas : "+this.Tas.getNbMaxElementsTas());

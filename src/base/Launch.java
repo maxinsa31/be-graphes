@@ -21,27 +21,28 @@ public class Launch {
     private final Readarg readarg ;
 
     public Launch(String[] args) {
-	this.readarg = new Readarg(args) ;
+    	this.readarg = new Readarg(args) ;
     }
 
     public void afficherMenu () {
-	System.out.println () ;
-	System.out.println ("MENU") ;
-	System.out.println () ;
-	System.out.println ("0 - Quitter") ;
-	System.out.println ("1 - Composantes Connexes") ;
-	System.out.println ("2 - Plus court chemin standard") ;
-	System.out.println ("3 - Plus court chemin A-star") ;
-	System.out.println ("4 - Cliquer sur la carte pour obtenir un numero de sommet.") ;
-	System.out.println ("5 - Charger un fichier de chemin (.path) et le verifier.") ;
-	System.out.println ("6 - Covoiturage") ;
+    	System.out.println () ;
+    	System.out.println ("MENU") ;
+    	System.out.println () ;
+    	System.out.println ("0 - Quitter") ;
+    	System.out.println ("1 - Composantes Connexes") ;
+    	System.out.println ("2 - Plus court chemin standard") ;
+    	System.out.println ("3 - Plus court chemin A-star") ;
+    	System.out.println ("4 - Cliquer sur la carte pour obtenir un numero de sommet.") ;
+    	System.out.println ("5 - Charger un fichier de chemin (.path) et le verifier.") ;
+    	System.out.println ("6 - Covoiturage") ;
+    	System.out.println ("7 - Echange de colis") ;
 	
-	System.out.println () ;
+    	System.out.println () ;
     }
 
     public static void main(String[] args) {
-	Launch launch = new Launch(args) ;
-	launch.go () ;
+    	Launch launch = new Launch(args) ;
+    	launch.go () ;
     }
 
 	public void AfficherNb(String message, float nb){
@@ -73,57 +74,72 @@ public class Launch {
 	    int choix ;
 	    
 	    while (continuer) {
-		this.afficherMenu () ;
-		choix = this.readarg.lireInt ("Votre choix ? ") ;
+	    	this.afficherMenu () ;
+	    	choix = this.readarg.lireInt ("Votre choix ? ") ;
 		
-		// Algorithme a executer
-		Algo algo = null ;
+	    	// Algorithme a executer
+	    	Algo algo = null ;
 		
-		// Le choix correspond au numero du menu.
-		switch (choix) {
-		case 0 : continuer = false ; break ;
+	    	// Le choix correspond au numero du menu.
+	    	switch (choix) {
+	    		case 0 : continuer = false ; break ;
 
-		case 1 : algo = new Connexite(graphe, this.fichierSortie (), this.readarg) ; 	break ;
+	    		case 1 : algo = new Connexite(graphe, this.fichierSortie (), this.readarg) ; 	break ;
 		
-		case 2 : algo = new Pcc(graphe, this.fichierSortie (), this.readarg) ; break ;
+	    		case 2 : algo = new Pcc(graphe, this.fichierSortie (), this.readarg) ; break ;
 		
-		case 3 : algo = new PccStar(graphe, this.fichierSortie (), this.readarg) ; break ;
+	    		case 3 : algo = new PccStar(graphe, this.fichierSortie (), this.readarg) ; break ;
 	
-		case 4 : graphe.situerClick() ; break ;
+	    		case 4 : graphe.situerClick() ; break ;
 
-		case 5 :
-		    String nom_chemin = this.readarg.lireString ("Nom du fichier .path contenant le chemin ? ") ;
-		    Chemin c = graphe.verifierChemin(Openfile.open (nom_chemin), nom_chemin) ;
-		    c.calculCoutChemin();
-			AfficherNb("Cout du chemin : ",(float)c.getCout());
-			if (graphe.getTabNodes().length <= 1000000){
-				c.DessinerChemin(dessin);
-			}else{
-				c.DessinerChemin2(dessin);
-			}
-		    break ;
-		case 6 :
-			int numSommetPieton = this.readarg.lireInt("Sommet de départ du piéton ? ");
-			int numSommetVoiture = this.readarg.lireInt("Sommet de départ de la voiture ? ");
-			int numSommetArrivee = this.readarg.lireInt("Sommet de destination du covoiturage ? ");
-			Node SommetPieton = graphe.getTabNodes()[numSommetPieton];
-			Node SommetVoiture = graphe.getTabNodes()[numSommetVoiture];
-			Node SommetArrivee = graphe.getTabNodes()[numSommetArrivee];
-			Voyageur voiture = new Voyageur(SommetVoiture,SommetArrivee);
-			Pieton pieton = new Pieton(SommetPieton,SommetArrivee);
+	    		case 5 :
+	    			String nom_chemin = this.readarg.lireString ("Nom du fichier .path contenant le chemin ? ") ;
+	    			Chemin c = graphe.verifierChemin(Openfile.open (nom_chemin), nom_chemin) ;
+	    			c.calculCoutChemin();
+	    			AfficherNb("Cout du chemin : ",(float)c.getCout());
+	    			if (graphe.getTabNodes().length <= 1000000){
+	    				c.DessinerChemin(dessin);
+	    			}else{
+	    				c.DessinerChemin2(dessin);
+	    			}
+	    			break ;
+	    		case 6 :
+	    			int numSommetPieton = this.readarg.lireInt("Sommet de depart du piéton ? ");
+	    			int numSommetVoiture = this.readarg.lireInt("Sommet de depart de la voiture ? ");
+	    			int numSommetArrivee = this.readarg.lireInt("Sommet de destination du covoiturage ? ");
+	    			Node sommetPieton = graphe.getTabNodes()[numSommetPieton];
+	    			Node sommetVoiture = graphe.getTabNodes()[numSommetVoiture];
+	    			Node sommetArrivee = graphe.getTabNodes()[numSommetArrivee];
+	    			Voyageur voiture = new Voyageur(sommetVoiture,sommetArrivee);
+	    			Pieton pieton = new Pieton(sommetPieton,sommetArrivee);
 			
-			algo = new Covoiturage(pieton,voiture,graphe,this.fichierSortie(),this.readarg); 
+	    			algo = new Covoiturage(pieton,voiture,graphe,this.fichierSortie(),this.readarg); 
 			
-			break ;
+	    			break ;
+	    		case 7 :
+	    			int departRobot1 = this.readarg.lireInt("Sommet de depart du robot 1 ? ");
+	    			int departRobot2 = this.readarg.lireInt("Sommet de depart du robot 2 ? ");
+	    			int arriveeRobot1 = this.readarg.lireInt("Sommet d'arrivee du robot 1 ? ");
+	    			int arriveeRobot2 = this.readarg.lireInt("Sommet d'arrivee du robot 2 ? ");
+	    			Node sommetDepartRobot1 = graphe.getTabNodes()[departRobot1];
+	    			Node sommetDepartRobot2 = graphe.getTabNodes()[departRobot2];
+	    			Node sommetArriveeRobot1 = graphe.getTabNodes()[arriveeRobot1];
+	    			Node sommetArriveeRobot2 = graphe.getTabNodes()[arriveeRobot2];
+	    			Voyageur robot1 = new Voyageur (sommetDepartRobot1,sommetArriveeRobot1);
+	    			Voyageur robot2 = new Voyageur (sommetDepartRobot2,sommetArriveeRobot2);
 			
-		default:
-		    System.out.println ("Choix de menu incorrect : " + choix) ;
-		    System.exit(1) ;
-		}
+	    			algo = new EchangeColis(robot1,robot2,graphe,this.fichierSortie(),this.readarg);
+			
+	    			break;
+			
+	    		default:
+	    			System.out.println ("Choix de menu incorrect : " + choix) ;
+	    			System.exit(1) ;
+	    	}
 		
-		if (algo != null) { 
-			algo.run() ;
-		}
+	    	if (algo != null) { 
+	    		algo.run() ;
+	    	}
 	    }
 	    
 	    System.out.println ("Programme terminé.") ;
@@ -138,19 +154,19 @@ public class Launch {
 
     // Ouvre un fichier de sortie pour ecrire les reponses
     public PrintStream fichierSortie () {
-	PrintStream result = System.out ;
+    	PrintStream result = System.out ;
 
-	String nom = this.readarg.lireString ("Nom du fichier de sortie ? ") ;
+    	String nom = this.readarg.lireString ("Nom du fichier de sortie ? ") ;
 
-	if ("".equals(nom)) { nom = "/dev/null" ; }
+    	if ("".equals(nom)) { nom = "/dev/null" ; }
 
-	try { result = new PrintStream(nom) ; }
-	catch (Exception e) {
-	    System.err.println ("Erreur a l'ouverture du fichier " + nom) ;
-	    System.exit(1) ;
-	}
+    	try { result = new PrintStream(nom) ; }
+    	catch (Exception e) {
+    		System.err.println ("Erreur a l'ouverture du fichier " + nom) ;
+    		System.exit(1) ;
+    	}
 
-	return result ;
+    	return result ;
     }
 
 }

@@ -15,34 +15,34 @@ public class ImagePanel extends JPanel implements MouseListener {
     private Image image;
 
     public ImagePanel() {
-	super() ;
-	this.addMouseListener(this) ;
+    	super() ;
+    	this.addMouseListener(this) ;
     }
     
     public void setImage(Image image) {
-	this.image = image;
+    	this.image = image;
     }
     
     public void paintComponent(Graphics g) {
-	if(image != null) {
-	    g.drawImage(image, 0, 0, this);
-	}
+    	if(image != null) {
+    		g.drawImage(image, 0, 0, this);
+    	}
     }
     
     public Dimension getPreferredSize() {
-	int w, h;
-	Dimension result ;
+    	int w, h;
+    	Dimension result ;
 
-	if(image == null) {
-	    result = new Dimension(0, 0);
-	}
-	else {
-	    w = image.getWidth(null);
-	    h = image.getHeight(null);
-	    result = new Dimension(w > 0 ? w : 0, h > 0 ? h : 0);
-	}
+    	if(image == null) {
+    		result = new Dimension(0, 0);
+    	}
+    	else {
+    		w = image.getWidth(null);
+    		h = image.getHeight(null);
+    		result = new Dimension(w > 0 ? w : 0, h > 0 ? h : 0);
+    	}
 
-	return result ;
+    	return result ;
     }
 
     private int XClick ;
@@ -60,33 +60,33 @@ public class ImagePanel extends JPanel implements MouseListener {
     public void mouseReleased(MouseEvent e) { } ;
 
     public void mouseClicked(MouseEvent e) {
-	this.ClickIsHere = true ;
-	this.XClick = e.getX() ;
-	this.YClick = e.getY() ;
+    	this.ClickIsHere = true ;
+    	this.XClick = e.getX() ;
+    	this.YClick = e.getY() ;
 
-	synchronized (lock) {
-	    lock.notify() ;
-	}
+    	synchronized (lock) {
+    		lock.notify() ;
+    	}
     }
 
     /**
      *  Waits for a click. Returns true if a click really occured.
      */
     public boolean waitClick() {
-	this.ClickIsHere = false ;
+    	this.ClickIsHere = false ;
 	
-	try {
-	    synchronized (lock) {
-		// We wait until we are awaken by a click.
-		while (!this.ClickIsHere) {
-		    lock.wait() ;
-		}
-	    }
-	    return true ;
+    	try {
+    		synchronized (lock) {
+    			// We wait until we are awaken by a click.
+    			while (!this.ClickIsHere) {
+    				lock.wait() ;
+    			}
+    		}
+    		return true ;
 
-	} catch (Exception e) {
-	    return false ;
-	}
+    	} catch (Exception e) {
+    		return false ;
+    	}
     }
 
     public int getXClick() { return XClick ; }

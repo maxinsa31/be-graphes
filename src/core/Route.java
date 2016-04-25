@@ -6,13 +6,13 @@ public class Route{
 	private Descripteur des;
 	private Node noeudSucc;	
 	private int longueur;
-	private ArrayList<Segment> segments;//////////////////////////////////////////////////////////////:::
+	private ArrayList<Segment> segments;
 
 	public Route(Node noeudSucc, Descripteur des, int longueur){
 		this.noeudSucc=noeudSucc;
 		this.des=des;
 		this.longueur=longueur;
-		this.segments = new ArrayList<Segment>(); //////////////////////////////////////////////////:::
+		this.segments = new ArrayList<Segment>();
 	}
 
 	public Descripteur getDes(){
@@ -53,7 +53,6 @@ public class Route{
 			}
 			else{
 				this.segments.add(new Segment(S.getDeltaLong(),S.getDeltaLat(), false));
-				//this.segments.add(new Segment(S.getDeltaLong(),S.getDeltaLat(), true));
 			}
 			cpt++;
 		}

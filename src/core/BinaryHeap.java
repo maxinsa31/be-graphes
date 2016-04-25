@@ -50,10 +50,10 @@ public class BinaryHeap<E extends Comparable<E>> {
 
     // Constructor used for debug.
     private BinaryHeap(BinaryHeap<E> heap) {
-	this.currentSize = heap.currentSize ;
-	this.array = new ArrayList<E>(heap.array) ;
-	this.hmap = new HashMap<E,Integer>(heap.hmap);	
-	this.nbMaxElementsTas=0;	
+    	this.currentSize = heap.currentSize ;
+    	this.array = new ArrayList<E>(heap.array) ;
+    	this.hmap = new HashMap<E,Integer>(heap.hmap);	
+    	this.nbMaxElementsTas=0;	
         this.currentSize = 0;
     }
 
@@ -181,7 +181,7 @@ public class BinaryHeap<E extends Comparable<E>> {
     public E deleteMin( ) {
         E minItem = findMin( );
         E lastItem = this.array.get(--this.currentSize) ;
-         this.hmap.remove(minItem);	
+        this.hmap.remove(minItem);	
         this.arraySet(0, lastItem) ;
         this.percolateDown( 0 );
         return minItem;
@@ -209,19 +209,19 @@ public class BinaryHeap<E extends Comparable<E>> {
      */
     public void printSorted() {
 
-	BinaryHeap<E> copy = new BinaryHeap<E>(this) ;
+    	BinaryHeap<E> copy = new BinaryHeap<E>(this) ;
 
-	System.out.println() ;
-	System.out.println("========  Sorted HEAP  (size = " + this.currentSize + ")  ========") ;
-	System.out.println() ;
+    	System.out.println() ;
+    	System.out.println("========  Sorted HEAP  (size = " + this.currentSize + ")  ========") ;
+    	System.out.println() ;
 
-	while (!copy.isEmpty()) {
-	    System.out.println(copy.deleteMin()) ;
-	}
+    	while (!copy.isEmpty()) {
+    		System.out.println(copy.deleteMin()) ;
+    	}
 
-	System.out.println() ;
-	System.out.println("--------  End of heap  --------") ;
-	System.out.println() ;
+    	System.out.println() ;
+    	System.out.println("--------  End of heap  --------") ;
+    	System.out.println() ;
 	}
 
 	public void update(E elementSuiv){
@@ -233,53 +233,53 @@ public class BinaryHeap<E extends Comparable<E>> {
     // Test program : compare with the reference implementation PriorityQueue.
     public static void main(String [] args) {
         BinaryHeap<Integer> heap = new BinaryHeap<Integer>() ;
-	PriorityQueue<Integer> queue = new PriorityQueue<Integer>() ;
+        PriorityQueue<Integer> queue = new PriorityQueue<Integer>() ;
 
-	int count = 0 ;
-	int blocksize = 10000 ;
+        int count = 0 ;
+        int blocksize = 10000 ;
 
-	System.out.println("Interrupt to stop the test.") ;
+        System.out.println("Interrupt to stop the test.") ;
 	
-	while (true) {
+        while (true) {
 
-	    // Insert up to blocksize elements
-	    int nb_insert = (int)(Math.random() * (blocksize + 1)) ;
+        	// Insert up to blocksize elements
+        	int nb_insert = (int)(Math.random() * (blocksize + 1)) ;
 	    
-	    for (int i = 0 ; i < nb_insert ; i++) {
-		Integer obj = new Integer(i) ;
-		heap.insert(obj,i) ;
-		queue.add(obj) ;
-	    }
+        	for (int i = 0 ; i < nb_insert ; i++) {
+        		Integer obj = new Integer(i) ;
+        		heap.insert(obj,i) ;
+        		queue.add(obj) ;
+        	}
 
-	    // Remove up to blocksize elements
-	    int nb_remove = (int)(Math.random() * blocksize * 1.1) ;
+        	// Remove up to blocksize elements
+        	int nb_remove = (int)(Math.random() * blocksize * 1.1) ;
 	    
-	    if (nb_remove > queue.size()) {
-		nb_remove = queue.size() ;
-	    }
+        	if (nb_remove > queue.size()) {
+        		nb_remove = queue.size() ;
+        	}
 
-	    for (int i = 0 ; i < nb_remove ; i++) {
+        	for (int i = 0 ; i < nb_remove ; i++) {
 
-		int removed1 = queue.poll().intValue() ;
-		int removed2 = heap.deleteMin().intValue() ;
+        		int removed1 = queue.poll().intValue() ;
+        		int removed2 = heap.deleteMin().intValue() ;
 		
-		if (removed1 != removed2) {
-		    System.out.println("Ouch : expected " + removed1 + "  .. but got " + removed2) ;
-		    System.exit(1) ;
-		}
-	    }
+        		if (removed1 != removed2) {
+        			System.out.println("Ouch : expected " + removed1 + "  .. but got " + removed2) ;
+        			System.exit(1) ;
+        		}
+        	}
 
-	    if (heap.size() != queue.size()) {
-		    System.out.println("Ouch : heap size = " + heap.size() + "  queue size = " + queue.size() ) ;
-		    System.exit(1) ;
-		}
+        	if (heap.size() != queue.size()) {
+        		System.out.println("Ouch : heap size = " + heap.size() + "  queue size = " + queue.size() ) ;
+        		System.exit(1) ;
+        	}
 
-	    count += nb_remove ;
+        	count += nb_remove ;
 	    
-	    if (count > 1000000) {
-		System.out.println("" + count + " items successfully compared. Heap size : " + heap.size()) ;
-		count = 0 ;
-	    }
-	}
+        	if (count > 1000000) {
+        		System.out.println("" + count + " items successfully compared. Heap size : " + heap.size()) ;
+        		count = 0 ;
+        	}
+        }
     }
 }
