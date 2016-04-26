@@ -26,13 +26,27 @@ public class Pcc extends Algo {
 
     public Pcc(Graphe gr, PrintStream sortie, Readarg readarg) {
 		super(gr, sortie, readarg) ;
+		
+		int saisie = readarg.lireInt("Voulez-vous saisir les sommets au clavier ou au clic ? ( 0 si clavier, 1 si clic ) ");
 
 		this.zoneOrigine = gr.getZone () ;
-		this.origine = readarg.lireInt ("Numero du sommet d'origine ? ") ;
+		if(saisie == 0){
+			this.origine = readarg.lireInt ("Numero du sommet d'origine ? ") ;
+		}
+		else{
+			System.out.print("Numero du sommet d'origine ? ");
+			this.origine = this.getGraphe().situerClick();
+		}
 
 		// Demander la zone et le sommet destination.
 		this.zoneOrigine = gr.getZone () ;
-		this.destination = readarg.lireInt ("Numero du sommet destination ? ");
+		if(saisie == 0){
+			this.destination = readarg.lireInt ("Numero du sommet destination ? ");
+		}
+		else{
+			System.out.print("Numero du sommet destination ? ");
+			this.destination = this.getGraphe().situerClick();
+		}
 
 		this.tabLabel = new Label[gr.getTabNodes().length];
 	
@@ -167,7 +181,7 @@ public class Pcc extends Algo {
     public void run() {
 
 		System.out.println("Run PCC de " + zoneOrigine + ":" + origine + " vers " + zoneDestination + ":" + destination) ;
-		
+		int dessiner = this.readarg.lireInt("Voulez-vous dessiner le chemin ? ( 1 si oui, 0 sinon ) ");
 		
 		for(int i = 0; i < this.tabLabel.length ; i++){
 			this.tabLabel[i] = new Label(i); // initialisation des labels ( sommets non marques, cout infini, pas de sommet pred pcc)
@@ -193,11 +207,13 @@ public class Pcc extends Algo {
 			System.out.println("Nombre de sommets explores : "+this.nbSommetsExplores);
 			System.out.println("Nombre de sommets marques : "+this.nbSommetsMarques);
 			System.out.println("Nombre maximum de sommets dans le tas : "+this.Tas.getNbMaxElementsTas());
-			/*if (this.graphe.getTabNodes().length <= 1000000){
-				chemin.DessinerChemin(this.graphe.getDessin());
-			}else{
-				chemin.DessinerChemin2(this.graphe.getDessin());
-			}*/
+			if(dessiner == 1){
+				if (this.graphe.getTabNodes().length <= 1000000){
+					chemin.DessinerChemin(this.graphe.getDessin());
+				}else{
+					chemin.DessinerChemin2(this.graphe.getDessin());
+				}
+			}
 		}
 		else{
 			System.out.println("Ce chemin est inexistant ...");

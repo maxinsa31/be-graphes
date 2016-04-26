@@ -10,10 +10,12 @@ public abstract class Algo {
 
     protected PrintStream sortie ;
     protected Graphe graphe ;
+    protected Readarg readarg ;
     
     protected Algo(Graphe gr, PrintStream fichierSortie, Readarg readarg) {
     	this.graphe = gr ;
     	this.sortie = fichierSortie ;	
+    	this.readarg = readarg ;
     }
     
     

@@ -2,6 +2,7 @@ package core;
 
 import java.awt.Color;
 import java.io.PrintStream;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import base.Readarg;
@@ -102,8 +103,11 @@ public void Dijkstra1versN(boolean inverse){ // inverse vaut 0 si normal et 1 si
 		// Tracé des 4 points (départ + arrivée des 2 robots)
 		this.graphe.getDessin().setColor(Color.cyan);
 		this.graphe.getDessin().drawPoint(this.robot1.noeudDepart.getLong(), this.robot1.noeudDepart.getLat(), 7);
+		this.graphe.getDessin().setColor(Color.blue);
 		this.graphe.getDessin().drawPoint(this.robot1.noeudArrivee.getLong(), this.robot1.noeudArrivee.getLat(), 7);
+		this.graphe.getDessin().setColor(Color.pink);
 		this.graphe.getDessin().drawPoint(this.robot2.noeudDepart.getLong(), this.robot2.noeudDepart.getLat(), 7);
+		this.graphe.getDessin().setColor(Color.magenta);
 		this.graphe.getDessin().drawPoint(this.robot2.noeudArrivee.getLong(), this.robot2.noeudArrivee.getLat(), 7);
 		
 		// Détermination du centre de la forme engendrée par les 4 points du dessus
@@ -198,6 +202,56 @@ public void Dijkstra1versN(boolean inverse){ // inverse vaut 0 si normal et 1 si
 				}
 			}
 			System.out.println("Noeud de rencontre : "+nodeRencontre.getNumNode());
+			
+			// Tracé du chemin du robot 1 vers le point de rencontre
+			Chemin chemin = new Chemin();		
+			int numSommet = nodeRencontre.getNumNode();
+			ArrayList<Node> temp=new ArrayList<Node>();
+			while(numSommet!=this.robot1.noeudDepart.getNumNode()){
+				temp.add(this.graphe.getTabNodes()[numSommet]);
+				numSommet=label1versIso[numSommet].getPere();
+			}
+			temp.add(this.graphe.getTabNodes()[numSommet]);
+			chemin.reverseCopy(temp);
+			this.graphe.getDessin().setColor(Color.cyan);
+			chemin.DessinerChemin(this.graphe.getDessin());
+			
+			// Tracé du chemin du robot 2 vers le point de rencontre
+			chemin = new Chemin();		
+			numSommet = nodeRencontre.getNumNode();
+			temp=new ArrayList<Node>();
+			while(numSommet!=this.robot2.noeudDepart.getNumNode()){
+				temp.add(this.graphe.getTabNodes()[numSommet]);
+				numSommet=label2versIso[numSommet].getPere();
+			}
+			temp.add(this.graphe.getTabNodes()[numSommet]);
+			chemin.reverseCopy(temp);
+			this.graphe.getDessin().setColor(Color.pink);
+			chemin.DessinerChemin(this.graphe.getDessin());
+			
+			// Tracé du chemin du point de rencontre vers la destination du robot 1
+			chemin = new Chemin();		
+			numSommet = nodeRencontre.getNumNode();
+			while(numSommet!=this.robot1.noeudArrivee.getNumNode()){
+				chemin.getChemin().add(this.graphe.getTabNodes()[numSommet]);
+				numSommet=labelDest1versIso[numSommet].getPere();
+			}
+			chemin.getChemin().add(this.graphe.getTabNodes()[numSommet]);
+			this.graphe.getDessin().setColor(Color.blue);
+			chemin.DessinerChemin(this.graphe.getDessin());
+			
+			// Tracé du chemin du point de rencontre vers la destination du robot 2
+			chemin = new Chemin();		
+			numSommet = nodeRencontre.getNumNode();
+			while(numSommet!=this.robot2.noeudArrivee.getNumNode()){
+				chemin.getChemin().add(this.graphe.getTabNodes()[numSommet]);
+				numSommet=labelDest2versIso[numSommet].getPere();
+			}
+			chemin.getChemin().add(this.graphe.getTabNodes()[numSommet]);
+			this.graphe.getDessin().setColor(Color.magenta);
+			chemin.DessinerChemin(this.graphe.getDessin());
+			
+			//Tracé du point de rencontre
 			this.graphe.getDessin().setColor(Color.darkGray);
 			this.graphe.getDessin().drawPoint(nodeRencontre.getLong(), nodeRencontre.getLat(), 5);
 		}

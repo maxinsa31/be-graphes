@@ -237,10 +237,10 @@ public class Graphe {
      *  A n'utiliser que pour faire du debug ou des tests ponctuels.
      *  Ne pas utiliser automatiquement a chaque invocation des algorithmes.
      */
-    public void situerClick() {
+    public int situerClick() {
 
     	System.out.println("Allez-y, cliquez donc.") ;
-	
+    	int noeud = 0;
     	if (dessin.waitClick()) {
     		float lon = dessin.getClickLon() ;
     		float lat = dessin.getClickLat() ;
@@ -249,7 +249,7 @@ public class Graphe {
 
     		// On cherche le noeud le plus proche. O(n)
     		float minDist = Float.MAX_VALUE ;
-    		int   noeud   = 0 ;
+    		//int   noeud   = 0 ;
 	    
     		for (int num_node = 0 ; num_node < this.tabNodes.length ; num_node++) {
     			float londiff = (this.tabNodes[num_node].getLong() - lon) ;
@@ -266,6 +266,7 @@ public class Graphe {
     		dessin.setColor(java.awt.Color.red) ;
     		dessin.drawPoint(this.tabNodes[noeud].getLong(), this.tabNodes[noeud].getLat(), 5) ;
     	}
+    	return noeud;
     }
 
     /**
