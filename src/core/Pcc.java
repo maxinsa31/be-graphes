@@ -23,9 +23,13 @@ public class Pcc extends Algo {
 	protected BinaryHeap<Label> Tas;
 	
 	protected Chemin chemin;
+	
+	protected boolean dessiner; // vaut true si on veut dessiner, false sinon
 
     public Pcc(Graphe gr, PrintStream sortie, Readarg readarg) {
 		super(gr, sortie, readarg) ;
+		
+		this.dessiner = true ;
 		
 		int saisie = readarg.lireInt("Voulez-vous saisir les sommets au clavier ou au clic ? ( 0 si clavier, 1 si clic ) ");
 
@@ -57,6 +61,8 @@ public class Pcc extends Algo {
     
     public Pcc(Graphe gr, PrintStream sortie, Readarg readarg, int numSommetDepart) { //constructeur pour isochrone
 		super(gr, sortie, readarg) ;
+		
+		this.dessiner = false;
 
 		this.zoneOrigine = gr.getZone () ;
 		this.origine = numSommetDepart ;
@@ -74,8 +80,10 @@ public class Pcc extends Algo {
 		this.chemin = new Chemin();
     }
     
-    public Pcc(Graphe gr, PrintStream sortie, Readarg readarg, int numSommetDepart,int numSommetArrivee) { //constructeur pour le covoiturage
+    public Pcc(Graphe gr, PrintStream sortie, Readarg readarg, int numSommetDepart,int numSommetArrivee) { //constructeur pour le covoiturage et echange colis
 		super(gr, sortie, readarg) ;
+		
+		this.dessiner = false;
 
 		this.zoneOrigine = gr.getZone () ;
 		this.origine = numSommetDepart ;
@@ -100,6 +108,7 @@ public class Pcc extends Algo {
 
 	
 	public boolean DijkstraInverse(){
+		this.graphe.getDessin().setColor(Color.cyan);
 		long startTime = System.currentTimeMillis();
 		this.tabLabel[this.origine].setCout(0.0d); // cout de 0 pour le sommet origine
 		this.Tas.insert(this.tabLabel[this.origine],this.origine); // insertion dans le tas du sommet origine
@@ -126,7 +135,9 @@ public class Pcc extends Algo {
 						else{
 							this.Tas.insert(labelSommetSucc,numSommetSuccesseur);
 							this.nbSommetsExplores++;
-							this.graphe.getDessin().drawPoint(sommetSuccesseur.getLong(), sommetSuccesseur.getLat(), 2);
+							if(this.dessiner){
+								this.graphe.getDessin().drawPoint(sommetSuccesseur.getLong(), sommetSuccesseur.getLat(), 2);
+							}
 						}						
 					}
 				}
@@ -140,6 +151,7 @@ public class Pcc extends Algo {
 	}
 	
 	public boolean Dijkstra(){
+		this.graphe.getDessin().setColor(Color.cyan);
 		long startTime = System.currentTimeMillis();
 		this.tabLabel[this.origine].setCout(0.0d); // cout de 0 pour le sommet origine
 		this.Tas.insert(this.tabLabel[this.origine],this.origine); // insertion dans le tas du sommet origine
@@ -166,7 +178,9 @@ public class Pcc extends Algo {
 						else{
 							this.Tas.insert(labelSommetSucc,numSommetSuccesseur);
 							this.nbSommetsExplores++;
-							this.graphe.getDessin().drawPoint(sommetSuccesseur.getLong(), sommetSuccesseur.getLat(), 2);
+							if(this.dessiner){
+								this.graphe.getDessin().drawPoint(sommetSuccesseur.getLong(), sommetSuccesseur.getLat(), 2);
+							}
 						}						
 					}
 				}
@@ -181,7 +195,6 @@ public class Pcc extends Algo {
     public void run() {
 
 		System.out.println("Run PCC de " + zoneOrigine + ":" + origine + " vers " + zoneDestination + ":" + destination) ;
-		int dessiner = this.readarg.lireInt("Voulez-vous dessiner le chemin ? ( 1 si oui, 0 sinon ) ");
 		
 		for(int i = 0; i < this.tabLabel.length ; i++){
 			this.tabLabel[i] = new Label(i); // initialisation des labels ( sommets non marques, cout infini, pas de sommet pred pcc)
@@ -189,7 +202,7 @@ public class Pcc extends Algo {
 				
 		
 		
-		this.graphe.getDessin().setColor(Color.green);
+		
 		if(Dijkstra()){ // dijkstra de pcc
 			int numSommet=this.destination;
 
@@ -207,7 +220,8 @@ public class Pcc extends Algo {
 			System.out.println("Nombre de sommets explores : "+this.nbSommetsExplores);
 			System.out.println("Nombre de sommets marques : "+this.nbSommetsMarques);
 			System.out.println("Nombre maximum de sommets dans le tas : "+this.Tas.getNbMaxElementsTas());
-			if(dessiner == 1){
+			if(this.dessiner){
+				this.graphe.getDessin().setColor(Color.green);
 				if (this.graphe.getTabNodes().length <= 1000000){
 					chemin.DessinerChemin(this.graphe.getDessin());
 				}else{

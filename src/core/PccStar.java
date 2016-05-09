@@ -22,7 +22,7 @@ public class PccStar extends Pcc {
 			double distanceI = Graphe.distance((double)this.graphe.getTabNodes()[i].getLong(), (double)this.graphe.getTabNodes()[i].getLat(),(double)this.graphe.getTabNodes()[destination].getLong() , (double)this.graphe.getTabNodes()[destination].getLat());
 			this.tabLabel[i] = new LabelPccStar(i,distanceI/(100d*130d/6d));//vitesse 130km/h dist/(100d*130d/6d)
 		}
-		this.graphe.getDessin().setColor(Color.cyan);
+		
 		if(Dijkstra()){ 
 			int numSommet=this.destination;
 
@@ -38,10 +38,14 @@ public class PccStar extends Pcc {
 			System.out.println("Nombre de sommets explores : "+this.nbSommetsExplores);
 			System.out.println("Nombre de sommets marques : "+this.nbSommetsMarques);
 			System.out.println("Nombre maximum de sommets dans le tas : "+this.Tas.getNbMaxElementsTas());
-			if (this.graphe.getTabNodes().length <= 1000000){
-				chemin.DessinerChemin(this.graphe.getDessin());
-			}else{
-				chemin.DessinerChemin2(this.graphe.getDessin());
+			
+			if(this.dessiner){
+				this.graphe.getDessin().setColor(Color.green);
+				if (this.graphe.getTabNodes().length <= 1000000){
+					chemin.DessinerChemin(this.graphe.getDessin());
+				}else{
+					chemin.DessinerChemin2(this.graphe.getDessin());
+				}
 			}
 		}
 		else{

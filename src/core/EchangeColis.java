@@ -148,7 +148,9 @@ public void Dijkstra1versN(boolean inverse){ // inverse vaut 0 si normal et 1 si
 		this.pcc.Tas = new BinaryHeap<Label>();
 		this.Dijkstra1versN(false); // argument false car dijkstra pas inverse
 		for(Node N : this.iso.nodesAtteignables){
-			this.sommeDesCouts.put(N, this.sommeDesCouts.get(N)+this.pcc.tabLabel[N.getNumNode()].getCout());
+			if(this.pcc.tabLabel[N.getNumNode()].getCout()> this.sommeDesCouts.get(N)){
+				this.sommeDesCouts.put(N, this.sommeDesCouts.get(N)+this.pcc.tabLabel[N.getNumNode()].getCout());
+			}
 		}
 		
 		Label [] label2versIso = new Label[this.graphe.getTabNodes().length];		
@@ -158,6 +160,9 @@ public void Dijkstra1versN(boolean inverse){ // inverse vaut 0 si normal et 1 si
 		}
 		
 		System.out.println("Pcc de la destination 1 vers la zone de l'isochrone");
+		
+		HashMap <Node,Double> coutsDest = new HashMap<Node,Double>();
+		
 		this.pcc.origine = this.robot1.noeudArrivee.getNumNode();
 		for(int i = 0; i < this.pcc.tabLabel.length ; i++){
 			this.pcc.tabLabel[i] = new Label(i); // reinitialisation des labels ( sommets non marques, cout infini, pas de sommet pred pcc)
@@ -165,7 +170,7 @@ public void Dijkstra1versN(boolean inverse){ // inverse vaut 0 si normal et 1 si
 		this.pcc.Tas = new BinaryHeap<Label>();
 		this.Dijkstra1versN(true); // argument false car dijkstra pas inverse
 		for(Node N : this.iso.nodesAtteignables){
-			this.sommeDesCouts.put(N, this.sommeDesCouts.get(N)+this.pcc.tabLabel[N.getNumNode()].getCout());
+			coutsDest.put(N,this.pcc.tabLabel[N.getNumNode()].getCout());
 		}
 		
 		Label [] labelDest1versIso = new Label[this.graphe.getTabNodes().length];		
@@ -182,7 +187,12 @@ public void Dijkstra1versN(boolean inverse){ // inverse vaut 0 si normal et 1 si
 		this.pcc.Tas = new BinaryHeap<Label>();
 		this.Dijkstra1versN(true); // argument false car dijkstra pas inverse
 		for(Node N : this.iso.nodesAtteignables){
-			this.sommeDesCouts.put(N, this.sommeDesCouts.get(N)+this.pcc.tabLabel[N.getNumNode()].getCout());
+			if(this.pcc.tabLabel[N.getNumNode()].getCout() > coutsDest.get(N)){
+				this.sommeDesCouts.put(N, this.sommeDesCouts.get(N)+this.pcc.tabLabel[N.getNumNode()].getCout());
+			}
+			else{
+				this.sommeDesCouts.put(N, this.sommeDesCouts.get(N)+coutsDest.get(N));
+			}
 		}
 		
 		Label [] labelDest2versIso = new Label[this.graphe.getTabNodes().length];		
