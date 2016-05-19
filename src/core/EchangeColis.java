@@ -103,12 +103,16 @@ public void Dijkstra1versN(boolean inverse){ // inverse vaut 0 si normal et 1 si
 		// Tracé des 4 points (départ + arrivée des 2 robots)
 		this.graphe.getDessin().setColor(Color.cyan);
 		this.graphe.getDessin().drawPoint(this.robot1.noeudDepart.getLong(), this.robot1.noeudDepart.getLat(), 7);
+		this.graphe.getDessin().putText(this.robot1.noeudDepart.getLong(), this.robot1.noeudDepart.getLat(), "Depart R1");
 		this.graphe.getDessin().setColor(Color.blue);
 		this.graphe.getDessin().drawPoint(this.robot1.noeudArrivee.getLong(), this.robot1.noeudArrivee.getLat(), 7);
+		this.graphe.getDessin().putText(this.robot1.noeudArrivee.getLong(), this.robot1.noeudArrivee.getLat(), "Arrivee R1");
 		this.graphe.getDessin().setColor(Color.pink);
 		this.graphe.getDessin().drawPoint(this.robot2.noeudDepart.getLong(), this.robot2.noeudDepart.getLat(), 7);
+		this.graphe.getDessin().putText(this.robot2.noeudDepart.getLong(), this.robot2.noeudDepart.getLat(), "Depart R2");
 		this.graphe.getDessin().setColor(Color.magenta);
 		this.graphe.getDessin().drawPoint(this.robot2.noeudArrivee.getLong(), this.robot2.noeudArrivee.getLat(), 7);
+		this.graphe.getDessin().putText(this.robot2.noeudArrivee.getLong(), this.robot2.noeudArrivee.getLat(), "Arrivee R2");
 		
 		// Détermination du centre de la forme engendrée par les 4 points du dessus
 		int centreIsochrone = this.situerCentre().getNumNode();
@@ -264,6 +268,7 @@ public void Dijkstra1versN(boolean inverse){ // inverse vaut 0 si normal et 1 si
 			//Tracé du point de rencontre
 			this.graphe.getDessin().setColor(Color.darkGray);
 			this.graphe.getDessin().drawPoint(nodeRencontre.getLong(), nodeRencontre.getLat(), 5);
+			this.graphe.getDessin().putText(nodeRencontre.getLong(), nodeRencontre.getLat(), "Rencontre");
 			
 			System.out.println("Cout total : "+this.sommeDesCouts.get(nodeRencontre));
 		}

@@ -36,6 +36,7 @@ public class Launch {
     	System.out.println ("5 - Charger un fichier de chemin (.path) et le verifier.") ;
     	System.out.println ("6 - Covoiturage") ;
     	System.out.println ("7 - Echange de colis") ;
+    	System.out.println ("8 - Test de performance") ;
 	
     	System.out.println () ;
     }
@@ -131,18 +132,34 @@ public class Launch {
 	    			algo = new EchangeColis(robot1,robot2,graphe,this.fichierSortie(),this.readarg);
 			
 	    			break;
+	    			
+	    		case 8 :
+	    			for(int i=0;i<5;i++){
+	    				int numSommetDepart = (int)(Math.random()*(graphe.getTabNodes().length+1));
+	    				int numSommetDestination = (int)(Math.random()*(graphe.getTabNodes().length+1));
+	    				System.gc();
+	    				algo = new Pcc(graphe,this.fichierSortie(),this.readarg,numSommetDepart,numSommetDestination);
+	    				algo.run();
+	    				System.gc();
+	    				algo = new PccStar(graphe,this.fichierSortie(),this.readarg,numSommetDepart,numSommetDestination);
+	    				algo.run();
+	    			}
+	    			algo = null;
+	    			
+	    			break;
 			
 	    		default:
 	    			System.out.println ("Choix de menu incorrect : " + choix) ;
 	    			System.exit(1) ;
 	    	}
 		
-	    	if (algo != null) { 
+	    	if (algo != null) {
+	    		System.gc();
 	    		algo.run() ;
 	    	}
 	    }
 	    
-	    System.out.println ("Programme terminÃ©.") ;
+	    System.out.println ("Programme terminé.") ;
 	    System.exit(0) ;
 	    
 	    

@@ -80,7 +80,7 @@ public class Pcc extends Algo {
 		this.chemin = new Chemin();
     }
     
-    public Pcc(Graphe gr, PrintStream sortie, Readarg readarg, int numSommetDepart,int numSommetArrivee) { //constructeur pour le covoiturage et echange colis
+    public Pcc(Graphe gr, PrintStream sortie, Readarg readarg, int numSommetDepart,int numSommetArrivee) { //constructeur pour le covoiturage et echange colis et test performance
 		super(gr, sortie, readarg) ;
 		
 		this.dessiner = false;
@@ -109,7 +109,7 @@ public class Pcc extends Algo {
 	
 	public boolean DijkstraInverse(){
 		this.graphe.getDessin().setColor(Color.cyan);
-		long startTime = System.currentTimeMillis();
+		double startTime = System.currentTimeMillis();
 		this.tabLabel[this.origine].setCout(0.0d); // cout de 0 pour le sommet origine
 		this.Tas.insert(this.tabLabel[this.origine],this.origine); // insertion dans le tas du sommet origine
 		int numSommetMin = this.origine;  // numero du sommet min du tas
@@ -143,8 +143,8 @@ public class Pcc extends Algo {
 				}
 			}
 		}
-		long endTime = System.currentTimeMillis();
-		float executionTime = (endTime - startTime) / 1000f;
+		double endTime = System.currentTimeMillis();
+		double executionTime = (endTime - startTime) / 1000d;
 		System.out.println("Temps d'execution : "+executionTime+" secondes");
 		return SommetMin.equals(this.graphe.getTabNodesInverse()[this.destination]);
 	
@@ -152,7 +152,7 @@ public class Pcc extends Algo {
 	
 	public boolean Dijkstra(){
 		this.graphe.getDessin().setColor(Color.cyan);
-		long startTime = System.currentTimeMillis();
+		double startTime = System.currentTimeMillis();
 		this.tabLabel[this.origine].setCout(0.0d); // cout de 0 pour le sommet origine
 		this.Tas.insert(this.tabLabel[this.origine],this.origine); // insertion dans le tas du sommet origine
 		int numSommetMin = this.origine;  // numero du sommet min du tas
@@ -186,8 +186,8 @@ public class Pcc extends Algo {
 				}
 			}
 		}
-		long endTime = System.currentTimeMillis();
-		float executionTime = (endTime - startTime) / 1000f;
+		double endTime = System.currentTimeMillis();
+		double executionTime = (endTime - startTime) / 1000d;
 		System.out.println("Temps d'execution : "+executionTime+" secondes");
 		return SommetMin.equals(this.graphe.getTabNodes()[this.destination]);
 	}

@@ -11,6 +11,10 @@ public class PccStar extends Pcc {
     public PccStar(Graphe gr, PrintStream sortie, Readarg readarg) {
     	super(gr, sortie, readarg) ;
     }
+    
+    public PccStar(Graphe gr, PrintStream sortie, Readarg readarg, int numSommetDepart, int numSommetArrivee){
+    	super(gr,sortie,readarg,numSommetDepart,numSommetArrivee);
+    }
 
     public void run() {
 

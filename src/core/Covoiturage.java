@@ -129,6 +129,9 @@ public class Covoiturage extends Algo{
 					nodeRencontre=N;
 				}
 			}
+			
+			this.graphe.getDessin().setColor(Color.black);
+			this.graphe.getDessin().putText(nodeRencontre.getLong(), nodeRencontre.getLat(), "Rencontre");
 		
 			Label [] labelDversP = new Label[this.graphe.getTabNodes().length];		
 			for(int i = 0 ; i< this.graphe.getTabNodes().length ; i++){
@@ -147,6 +150,7 @@ public class Covoiturage extends Algo{
 			tempP.add(this.graphe.getTabNodes()[numSommet]);
 			cheminPversP.reverseCopy(tempP);
 			this.graphe.getDessin().setColor(Color.green);
+			this.graphe.getDessin().putText(this.pieton.noeudDepart.getLong(), this.pieton.noeudDepart.getLat(), "Pieton");
 			cheminPversP.DessinerChemin(this.graphe.getDessin());
 		
 			// Tracé du chemin de Voiture vers le point de rencontre
@@ -160,6 +164,7 @@ public class Covoiturage extends Algo{
 			tempV.add(this.graphe.getTabNodes()[numSommet]);
 			cheminVversP.reverseCopy(tempV);
 			this.graphe.getDessin().setColor(Color.magenta);
+			this.graphe.getDessin().putText(this.voiture.noeudDepart.getLong(), this.voiture.noeudDepart.getLat(), "Voiture");
 			cheminVversP.DessinerChemin(this.graphe.getDessin());
 		
 			// Tracé du chemin de la Destination vers le point de rencontre
@@ -172,6 +177,7 @@ public class Covoiturage extends Algo{
 			cheminDversP.getChemin().add(this.graphe.getTabNodes()[numSommet]);
 			this.graphe.getDessin().setColor(Color.cyan);
 			cheminDversP.DessinerChemin(this.graphe.getDessin());
+			this.graphe.getDessin().putText(this.pieton.noeudArrivee.getLong(), this.pieton.noeudArrivee.getLat(), "Destination");
 		
 			System.out.println("temps total "+nouveauCout);
 			this.graphe.getDessin().setColor(Color.black);
