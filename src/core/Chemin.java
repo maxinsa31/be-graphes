@@ -44,8 +44,14 @@ public class Chemin {
 			if(cpt< chemin.size() -1){
 				dessin.drawPoint (N.getLong(), N.getLat(), 7);
 				boolean trace = false;
+				double min = 1000000d;
 				for(Route R : N.getRoutesSuccesseurs()){
-					if (R.getNodeSucc().getNumNode() == chemin.get(cpt+1).getNumNode()){
+					if(R.getNodeSucc().getNumNode() == chemin.get(cpt+1).getNumNode() && min>R.getCoutRoute()){
+						min = R.getCoutRoute();
+					}
+				}
+				for(Route R : N.getRoutesSuccesseurs()){
+					if (R.getNodeSucc().getNumNode() == chemin.get(cpt+1).getNumNode() && R.getCoutRoute() == min){
 						trace = true;
 						for (Segment S : R.getSegments()){
                             if(S.getReverse()){
@@ -75,8 +81,13 @@ public class Chemin {
 				if(!trace){
 					current_long = chemin.get(cpt+1).getLong();
 			        current_lat = chemin.get(cpt+1).getLat();
-					for (Route R2 : chemin.get(cpt+1).getRoutesSuccesseurs()){
-						if(R2.getNodeSucc().getNumNode() == N.getNumNode()){
+			        for(Route R : N.getRoutesSuccesseurs()){
+						if(R.getNodeSucc().getNumNode() == chemin.get(cpt+1).getNumNode() && min>R.getCoutRoute()){
+							min = R.getCoutRoute();
+						}
+					}
+					for (Route R2 : chemin.get(cpt+1).getRoutesSuccesseurs() ){
+						if(R2.getNodeSucc().getNumNode() == N.getNumNode() && R2.getCoutRoute() == min ){
 							for (Segment S : R2.getSegments()){
 	                            if(S.getReverse()){
 	                                current_long = chemin.get(cpt).getLong();

@@ -89,7 +89,7 @@ public class Isochrone extends Pcc {
 				}
 				 
 			}
-			System.out.println("Cout sommet "+numSommetMin+" : "+labelSommetMin.getCout());
+			//System.out.println("Cout sommet "+numSommetMin+" : "+labelSommetMin.getCout());
 		}
 	}
 	
@@ -138,7 +138,7 @@ public class Isochrone extends Pcc {
 				}
 				 
 			}
-			System.out.println("Cout sommet "+numSommetMin+" : "+labelSommetMin.getCout());
+			//System.out.println("Cout sommet "+numSommetMin+" : "+labelSommetMin.getCout());
 		}
 	}
 }

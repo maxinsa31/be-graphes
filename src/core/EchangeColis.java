@@ -264,6 +264,8 @@ public void Dijkstra1versN(boolean inverse){ // inverse vaut 0 si normal et 1 si
 			//Tracé du point de rencontre
 			this.graphe.getDessin().setColor(Color.darkGray);
 			this.graphe.getDessin().drawPoint(nodeRencontre.getLong(), nodeRencontre.getLat(), 5);
+			
+			System.out.println("Cout total : "+this.sommeDesCouts.get(nodeRencontre));
 		}
 		
 	}
