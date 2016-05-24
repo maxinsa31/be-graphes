@@ -105,7 +105,6 @@ public class Covoiturage extends Algo{
 		for(Node N : this.iso.nodesAtteignables){
 			this.sommeDesCouts.put(N, this.algo.tabLabel[N.getNumNode()].getCout());
 		}
-		
 		Label [] labelVversP = new Label[this.graphe.getTabNodes().length];		
 		for(int i = 0 ; i< this.graphe.getTabNodes().length ; i++){
 			Label intermediaire = this.algo.tabLabel[i];

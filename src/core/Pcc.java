@@ -51,7 +51,11 @@ public class Pcc extends Algo {
 			System.out.print("Numero du sommet destination ? ");
 			this.destination = this.getGraphe().situerClick();
 		}
-
+		
+		if(this.origine<0 || this.origine>=this.graphe.getTabNodes().length || this.destination<0 || this.destination>=this.graphe.getTabNodes().length){
+			System.out.println("Au moins un des sommets saisis n'existe pas sur cette carte");
+			System.exit(1);
+		}
 		this.tabLabel = new Label[gr.getTabNodes().length];
 	
 		this.Tas = new BinaryHeap<Label>();
@@ -199,9 +203,12 @@ public class Pcc extends Algo {
 		for(int i = 0; i < this.tabLabel.length ; i++){
 			this.tabLabel[i] = new Label(i); // initialisation des labels ( sommets non marques, cout infini, pas de sommet pred pcc)
 		}
-				
 		
-		
+		this.graphe.getDessin().setColor(Color.black);
+		//this.graphe.getDessin().drawPoint(this.graphe.getTabNodes()[this.origine].getLong(), this.graphe.getTabNodes()[this.origine].getLat(), 4);
+		//this.graphe.getDessin().drawPoint(this.graphe.getTabNodes()[this.destination].getLong(), this.graphe.getTabNodes()[this.destination].getLat(), 4);
+		//this.graphe.getDessin().putText(this.graphe.getTabNodes()[this.origine].getLong(), this.graphe.getTabNodes()[this.origine].getLat(), "Noeud de départ");
+		//this.graphe.getDessin().putText(this.graphe.getTabNodes()[this.destination].getLong(), this.graphe.getTabNodes()[this.destination].getLat(), "Noeud d'arrivée");
 		
 		if(Dijkstra()){ // dijkstra de pcc
 			int numSommet=this.destination;

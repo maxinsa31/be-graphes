@@ -20,6 +20,11 @@ public class PccStar extends Pcc {
 
 	System.out.println("Run PCC-Star de " + zoneOrigine + ":" + origine + " vers " + zoneDestination + ":" + destination) ;
 
+	this.graphe.getDessin().setColor(Color.black);
+	this.graphe.getDessin().drawPoint(this.graphe.getTabNodes()[this.origine].getLong(), this.graphe.getTabNodes()[this.origine].getLat(), 4);
+	this.graphe.getDessin().drawPoint(this.graphe.getTabNodes()[this.destination].getLong(), this.graphe.getTabNodes()[this.destination].getLat(), 4);
+	this.graphe.getDessin().putText(this.graphe.getTabNodes()[this.origine].getLong(), this.graphe.getTabNodes()[this.origine].getLat(), "Noeud de départ");
+	this.graphe.getDessin().putText(this.graphe.getTabNodes()[this.destination].getLong(), this.graphe.getTabNodes()[this.destination].getLat(), "Noeud d'arrivée");
 		System.out.println("Destination : "+destination);
 		for(int i = 0; i < this.tabLabel.length ; i++){
 			// initialisation des labels ( sommets non marques, cout infini, pas de sommet pred pcc)

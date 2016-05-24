@@ -51,7 +51,7 @@ public class EchangeColis extends Algo {
 	
 public void Dijkstra1versN(boolean inverse){ // inverse vaut 0 si normal et 1 si inverse
 		
-		int reste = this.sommeDesCouts.size();
+		int reste = this.iso.nodesAtteignables.size();
 		this.pcc.tabLabel[this.pcc.origine].setCout(0.0d); // cout de 0 pour le sommet origine
 		this.pcc.Tas.insert(this.pcc.tabLabel[this.pcc.origine],this.pcc.origine); // insertion dans le tas du sommet origine
 		int numSommetMin = this.pcc.origine;
