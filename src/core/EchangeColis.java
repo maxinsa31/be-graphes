@@ -116,6 +116,10 @@ public void Dijkstra1versN(boolean inverse){ // inverse vaut 0 si normal et 1 si
 		
 		// Détermination du centre de la forme engendrée par les 4 points du dessus
 		int centreIsochrone = this.situerCentre().getNumNode();
+		this.graphe.getDessin().setColor(Color.black);
+		this.graphe.getDessin().drawPoint(this.graphe.getTabNodes()[centreIsochrone].getLong(), this.graphe.getTabNodes()[centreIsochrone].getLat(), 4);
+		this.graphe.getDessin().putText(this.graphe.getTabNodes()[centreIsochrone].getLong(), this.graphe.getTabNodes()[centreIsochrone].getLat(), "centre de la forme");
+		
 		// Ce point est le point de départ d'un isochrone que nous allons utiliser
 		this.iso.origine = centreIsochrone; 
 		
@@ -123,6 +127,7 @@ public void Dijkstra1versN(boolean inverse){ // inverse vaut 0 si normal et 1 si
 		this.pcc.destination = centreIsochrone;
 		this.pcc.run();
 		this.pcc.chemin.calculCoutChemin();
+		
 		
 		// cout max de l'isochrone : 1/3 du temps de trajet entre un des points et le centre de l'isochrone
 		this.iso.setCoutMax(this.pcc.chemin.getCout()/2.0d);
@@ -137,6 +142,7 @@ public void Dijkstra1versN(boolean inverse){ // inverse vaut 0 si normal et 1 si
 		for(Node N : this.iso.nodesAtteignables){
 			this.sommeDesCouts.put(N, this.pcc.tabLabel[N.getNumNode()].getCout());
 		}
+		System.out.println(this.sommeDesCouts.get(28));
 		
 		Label [] label1versIso = new Label[this.graphe.getTabNodes().length];		
 		for(int i = 0 ; i< this.graphe.getTabNodes().length ; i++){
@@ -153,9 +159,11 @@ public void Dijkstra1versN(boolean inverse){ // inverse vaut 0 si normal et 1 si
 		this.Dijkstra1versN(false); // argument false car dijkstra pas inverse
 		for(Node N : this.iso.nodesAtteignables){
 			if(this.pcc.tabLabel[N.getNumNode()].getCout()> this.sommeDesCouts.get(N)){
-				this.sommeDesCouts.put(N, this.sommeDesCouts.get(N)+this.pcc.tabLabel[N.getNumNode()].getCout());
+				//this.sommeDesCouts.put(N, this.sommeDesCouts.get(N)+this.pcc.tabLabel[N.getNumNode()].getCout());
+				this.sommeDesCouts.put(N, this.pcc.tabLabel[N.getNumNode()].getCout());
 			}
 		}
+		
 		
 		Label [] label2versIso = new Label[this.graphe.getTabNodes().length];		
 		for(int i = 0 ; i< this.graphe.getTabNodes().length ; i++){
@@ -172,10 +180,11 @@ public void Dijkstra1versN(boolean inverse){ // inverse vaut 0 si normal et 1 si
 			this.pcc.tabLabel[i] = new Label(i); // reinitialisation des labels ( sommets non marques, cout infini, pas de sommet pred pcc)
 		}
 		this.pcc.Tas = new BinaryHeap<Label>();
-		this.Dijkstra1versN(true); // argument false car dijkstra pas inverse
+		this.Dijkstra1versN(true); // argument true car dijkstra inverse
 		for(Node N : this.iso.nodesAtteignables){
 			coutsDest.put(N,this.pcc.tabLabel[N.getNumNode()].getCout());
 		}
+		
 		
 		Label [] labelDest1versIso = new Label[this.graphe.getTabNodes().length];		
 		for(int i = 0 ; i< this.graphe.getTabNodes().length ; i++){
@@ -189,7 +198,7 @@ public void Dijkstra1versN(boolean inverse){ // inverse vaut 0 si normal et 1 si
 			this.pcc.tabLabel[i] = new Label(i); // reinitialisation des labels ( sommets non marques, cout infini, pas de sommet pred pcc)
 		}
 		this.pcc.Tas = new BinaryHeap<Label>();
-		this.Dijkstra1versN(true); // argument false car dijkstra pas inverse
+		this.Dijkstra1versN(true); // argument true car dijkstra inverse
 		for(Node N : this.iso.nodesAtteignables){
 			if(this.pcc.tabLabel[N.getNumNode()].getCout() > coutsDest.get(N)){
 				this.sommeDesCouts.put(N, this.sommeDesCouts.get(N)+this.pcc.tabLabel[N.getNumNode()].getCout());
@@ -209,8 +218,9 @@ public void Dijkstra1versN(boolean inverse){ // inverse vaut 0 si normal et 1 si
 			Node nodeRencontre = this.iso.nodesAtteignables.get(0);
 			double nouveauCout=0;
 			for(Node N : this.iso.nodesAtteignables){
-				nouveauCout = this.sommeDesCouts.get(N)+this.pcc.tabLabel[N.getNumNode()].getCout();
-				this.sommeDesCouts.put(N, nouveauCout);
+				//nouveauCout = this.sommeDesCouts.get(N)+this.pcc.tabLabel[N.getNumNode()].getCout();
+				//this.sommeDesCouts.put(N, nouveauCout);
+				nouveauCout = this.sommeDesCouts.get(N);
 				if(nouveauCout<this.sommeDesCouts.get(nodeRencontre)){
 					nodeRencontre=N;
 				}

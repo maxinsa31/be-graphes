@@ -89,7 +89,7 @@ public class Covoiturage extends Algo{
 		double coutMax = this.algo.getChemin().getCout();
 		this.iso.setCoutMax(coutMax);
 		this.iso.run();
-		this.iso.afficherNodesAtteignables();
+		//this.iso.afficherNodesAtteignables();
 		
 		for(Node N : this.iso.nodesAtteignables){
 			this.sommeDesCouts.put(N,0.0d);
@@ -177,7 +177,7 @@ public class Covoiturage extends Algo{
 			this.graphe.getDessin().setColor(Color.cyan);
 			cheminDversP.DessinerChemin(this.graphe.getDessin());
 			this.graphe.getDessin().putText(this.pieton.noeudArrivee.getLong(), this.pieton.noeudArrivee.getLat(), "Destination");
-		
+			System.out.println("noeud de rencontre : "+nodeRencontre.getNumNode());
 			System.out.println("temps total "+nouveauCout);
 			this.graphe.getDessin().setColor(Color.black);
 			this.graphe.getDessin().drawPoint(nodeRencontre.getLong(), nodeRencontre.getLat(), 10);
