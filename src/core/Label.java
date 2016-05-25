@@ -7,13 +7,13 @@ package core ;
 
 
 public class Label implements Comparable<Label>{
-	private boolean marquage ; // Vrai si sommet entièrement fixé par l'algo
+	private boolean marquage ; // Vrai si sommet entie�rement fixe par l'algo
 
 	protected double cout; // temps
 
 	private int pere; // num sommet pere du plus court chemin courant 
 
-	private int sommetCourant; // num sommet concerné par ce label
+	private int sommetCourant; // num sommet concerne par ce label
 
 	public Label(int sommetCourant){
 		this.sommetCourant=sommetCourant;

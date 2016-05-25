@@ -57,16 +57,16 @@ public void Dijkstra1versN(boolean inverse){ // inverse vaut 0 si normal et 1 si
 		int numSommetMin = this.pcc.origine;
 		Node sommetMin;
 		if(!inverse){
-			sommetMin=this.graphe.getTabNodes()[this.pcc.origine]; // numero du sommet min du tas
+			sommetMin=this.graphe.getTabNodes()[this.pcc.origine]; // sommet min du tas
 		}
 		else{
-			sommetMin=this.graphe.getTabNodesInverse()[this.pcc.origine]; // numero du sommet min du tas
+			sommetMin=this.graphe.getTabNodesInverse()[this.pcc.origine]; // sommet min du tas
 		}
 		int numSommetSuccesseur;
-		Node SommetSuccesseur; // numero d'un sommet successeur au sommet min du tas
-		while(reste >0 && !this.pcc.Tas.isEmpty()){ //tant qu'il existe des sommets non marques
+		Node SommetSuccesseur; // sommet successeur au sommet min du tas
+		while(reste >0 && !this.pcc.Tas.isEmpty()){ //tant qu'il existe des sommets non marques et que le tas est non vide
 			if(!inverse){
-				sommetMin = this.graphe.getTabNodes()[this.pcc.Tas.findMin().getSommetCourant()]; // recuperation du numero du sommet min du tas dans HashMap
+				sommetMin = this.graphe.getTabNodes()[this.pcc.Tas.findMin().getSommetCourant()]; // recuperation du sommet min du tas dans HashMap
 			}
 			else{
 				sommetMin = this.graphe.getTabNodesInverse()[this.pcc.Tas.findMin().getSommetCourant()];
@@ -79,7 +79,7 @@ public void Dijkstra1versN(boolean inverse){ // inverse vaut 0 si normal et 1 si
 			labelSommetMin.setCout(this.pcc.Tas.deleteMin().getCout()); //mise a jour du cout du label du sommet min 
 			labelSommetMin.setMarq(); // mise  a jour du marquage du sommet min : marque
 			for (Route r : sommetMin.getRoutesSuccesseurs()){ //pour tous les successeurs de sommet min
-				SommetSuccesseur = r.getNodeSucc(); // on recupere son numero de sommet
+				SommetSuccesseur = r.getNodeSucc(); 
 				numSommetSuccesseur = SommetSuccesseur.getNumNode();
 				Label labelSommetSucc=this.pcc.tabLabel[numSommetSuccesseur];
 				if(!labelSommetSucc.getMarq()){ // si ce sommet n'est pas marque

@@ -36,16 +36,16 @@ public class Covoiturage extends Algo{
 		int numSommetMin = this.algo.origine;
 		Node sommetMin;
 		if(!inverse){
-			sommetMin=this.graphe.getTabNodes()[this.algo.origine]; // numero du sommet min du tas
+			sommetMin=this.graphe.getTabNodes()[this.algo.origine]; //sommet min du tas
 		}
 		else{
-			sommetMin=this.graphe.getTabNodesInverse()[this.algo.origine]; // numero du sommet min du tas
+			sommetMin=this.graphe.getTabNodesInverse()[this.algo.origine]; // sommet min du tas
 		}
 		int numSommetSuccesseur;
-		Node SommetSuccesseur; // numero d'un sommet successeur au sommet min du tas
-		while(reste >0 && !this.algo.Tas.isEmpty()){ //tant qu'il existe des sommets non marques
+		Node SommetSuccesseur; // sommet successeur au sommet min du tas
+		while(reste >0 && !this.algo.Tas.isEmpty()){ //tant qu'il existe des sommets non marques et que le tas est non vide
 			if(!inverse){
-				sommetMin = this.graphe.getTabNodes()[this.algo.Tas.findMin().getSommetCourant()]; // recuperation du numero du sommet min du tas dans HashMap
+				sommetMin = this.graphe.getTabNodes()[this.algo.Tas.findMin().getSommetCourant()]; // recuperation du sommet min du tas dans HashMap
 			}
 			else{
 				sommetMin = this.graphe.getTabNodesInverse()[this.algo.Tas.findMin().getSommetCourant()];
@@ -58,8 +58,8 @@ public class Covoiturage extends Algo{
 			labelSommetMin.setCout(this.algo.Tas.deleteMin().getCout()); //mise a jour du cout du label du sommet min 
 			labelSommetMin.setMarq(); // mise  a jour du marquage du sommet min : marque
 			for (Route r : sommetMin.getRoutesSuccesseurs()){ //pour tous les successeurs de sommet min
-				SommetSuccesseur = r.getNodeSucc(); // on recupere son numero de sommet
-				numSommetSuccesseur = SommetSuccesseur.getNumNode();
+				SommetSuccesseur = r.getNodeSucc(); 
+				numSommetSuccesseur = SommetSuccesseur.getNumNode(); // on recupere son numero de sommet
 				Label labelSommetSucc=this.algo.tabLabel[numSommetSuccesseur];
 				if(!labelSommetSucc.getMarq()){ // si ce sommet n'est pas marque
 					if(labelSommetSucc.getCout()>(this.algo.tabLabel[numSommetMin].getCout()+r.getCoutRoute())){
@@ -117,7 +117,7 @@ public class Covoiturage extends Algo{
 			this.algo.tabLabel[i] = new Label(i); // reinitialisation des labels ( sommets non marques, cout infini, pas de sommet pred pcc)
 		}
 		this.algo.Tas = new BinaryHeap<Label>();
-		this.Dijkstra1versN(true); // argument false car dijkstra pas inverse
+		this.Dijkstra1versN(true); // argument true car dijkstra inverse
 		if(this.iso.nodesAtteignables.size()>0){
 			Node nodeRencontre = this.iso.nodesAtteignables.get(0);
 			double nouveauCout=0;

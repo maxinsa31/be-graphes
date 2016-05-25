@@ -160,7 +160,7 @@ public class Chemin {
 		int cout = 0;
 		int min = 1000000;
 		int cpt = 0;
-		for (Node N : chemin){ // nb noeuds du chemin
+		for (Node N : chemin){
 			if (cpt < chemin.size()-1){
 				for(Route R : N.getRoutesSuccesseurs()){
 					if ( (R.getLongueur()< min) && R.getNodeSucc().getNumNode()==chemin.get(cpt+1).getNumNode()){
